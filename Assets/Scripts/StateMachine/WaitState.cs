@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Runner.State
 {
-    public abstract class WaitState : MonoBehaviour, IState
+    public abstract class WaitState : IState
     {
         protected float _waitDuration;
         private float _timeLeft;

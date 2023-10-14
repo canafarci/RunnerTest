@@ -1,7 +1,6 @@
-using System;
-using Runner.State;
-using UnityEngine.TextCore.Text;
 using Zenject;
+using Runner.State;
+using Runner.PlayerMovement;
 
 namespace Runner.Installers
 {
@@ -12,14 +11,16 @@ namespace Runner.Installers
             Container.Bind<IState>().
                 WithId(BindingID.PlayerWaitForStartState).
                 To<PlayerWaitForStartState>().
-                FromComponentInChildren().
-                AsTransient();
+                AsSingle();
 
             Container.Bind<IState>().
                 WithId(BindingID.PlayerMoveState).
                 To<PlayerMoveState>().
-                FromComponentInChildren().
-                AsTransient();
+                AsSingle();
+
+            Container.Bind<PlayerMover>().
+                AsSingle();
+
         }
     }
 }

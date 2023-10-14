@@ -1,7 +1,9 @@
 {
-    "name": "Runner",
-    "rootNamespace": "Runner",
-    "references": [],
+    "name": "Runner.States",
+    "rootNamespace": "Runner.States",
+    "references": [
+        "GUID:09c5dce3d6f684e459dabd6984ab5088"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

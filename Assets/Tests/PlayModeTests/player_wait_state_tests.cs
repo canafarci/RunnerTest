@@ -17,15 +17,17 @@ namespace Runner.State.Tests
         private void CommonInstall()
         {
             _mockNextState = new Mock<IState>();
-            GameObject obj = new GameObject();
-            //Arrange
+            GameObject obj = new GameObject("parent");
 
+            //Arrange
             PreInstall();
+
+            Container.Bind<PlayerStateMachine>().FromNewComponentOn(obj).AsSingle();
 
             Container.Bind<IState>().
                 WithId(BindingID.PlayerMoveState).
                 FromInstance(_mockNextState.Object).
-                AsSingle();
+                AsTransient();
 
             Container.Bind<IState>().
                 WithId(BindingID.PlayerWaitForStartState).
@@ -33,9 +35,10 @@ namespace Runner.State.Tests
                 FromNewComponentOn(obj).
                 AsSingle();
 
-            Container.Bind<PlayerStateMachine>().FromNewComponentOn(obj).AsSingle();
 
             PostInstall();
+
+            Container.Resolve<PlayerStateMachine>();
         }
 
         [Inject(Id = BindingID.PlayerWaitForStartState)] IState _waitState;
@@ -69,6 +72,22 @@ namespace Runner.State.Tests
 
             //Assert
             Assert.IsTrue(timeLeft < maxTime);
+        }
+
+        [UnityTest]
+        public IEnumerator next_state_is_transitioned_when_time_expires()
+        {
+            //Arrange
+            CommonInstall();
+
+            yield return null;
+
+            //Act
+            float? maxTime = GetInstanceField(typeof(PlayerWaitForStartState), _waitState, "_waitDuration") as float?;
+            yield return new WaitForSeconds((float)maxTime + 1f);
+
+            //Assert
+            _mockNextState.Verify(state => state.Enter(), Times.Once);
         }
 
         private static object GetInstanceField(Type type, object instance, string fieldName)

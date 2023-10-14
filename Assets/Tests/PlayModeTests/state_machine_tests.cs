@@ -43,9 +43,6 @@ namespace Runner.State.Tests
             _mockState.Setup(state => state.Tick())
                      .Returns(_mockNextState.Object);
 
-            _mockNextState.Setup(state => state.Enter())
-            .Callback(() => UnityEngine.Debug.Log("Entered second state!"));
-
             //Act
             yield return null; //wait for one frame
             //Assert

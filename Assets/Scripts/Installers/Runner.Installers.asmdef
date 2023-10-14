@@ -1,0 +1,21 @@
+{
+    "name": "Runner.Installers",
+    "rootNamespace": "",
+    "references": [
+        "GUID:17013f5f97a34a14c9f88b8b43008a08",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:0f9f4db833914ee42b7a5d5617689a1f",
+        "GUID:7c09457f5b7c99d4bacaad22748bafe5",
+        "GUID:d1c2e5f72bdffde4983999b09ba7e521",
+        "GUID:09c5dce3d6f684e459dabd6984ab5088"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

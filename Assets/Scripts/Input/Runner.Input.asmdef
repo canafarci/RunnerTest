@@ -1,7 +1,9 @@
 {
-    "name": "Runner",
-    "rootNamespace": "Runner",
-    "references": [],
+    "name": "Runner.Input",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0f9f4db833914ee42b7a5d5617689a1f"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

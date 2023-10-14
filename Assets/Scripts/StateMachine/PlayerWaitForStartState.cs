@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Runner.State
 {
-    public class PlayerWaitForStartState : WaitState, IState
+    public class PlayerWaitForStartState : WaitState
     {
         //Initialization
         [Inject]
