@@ -23,15 +23,21 @@ namespace Runner.PlayerMovement
             _characterController.Move(_speed * Time.deltaTime * movement);
         }
 
-        //initialization
-        [Inject]
-        private PlayerMover(IInputReader reader, CharacterController characterController, PlayerConfigSO config)
+        private PlayerMover(IInputReader reader,
+                            [Inject(Id = MovementComponents.PlayerCharacterController)] CharacterController characterController,
+                            PlayerConfigSO config)
         {
             _inputReader = reader;
             _characterController = characterController;
             _speed = config.PlayerSpeed;
+
             _characterController.height = config.PlayerHeight;
             _characterController.center = new Vector3(0f, config.PlayerHeight / 2f, 0f);
         }
+    }
+
+    public enum MovementComponents
+    {
+        PlayerCharacterController
     }
 }

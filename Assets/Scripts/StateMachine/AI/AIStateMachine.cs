@@ -10,8 +10,8 @@ namespace Runner.StateMachine
 
         [Inject]
         private void Init([Inject(Id = CharacterState.AIWaitState)] IState waitState,
-                                [Inject(Id = CharacterState.DecideState)] IState decideState,
-                                [Inject(Id = CharacterState.AIMoveState)] IState moveState)
+                          [Inject(Id = CharacterState.DecideState)] IState decideState,
+                          [Inject(Id = CharacterState.AIMoveState)] IState moveState)
         {
             _waitState = waitState;
             _decideState = decideState;

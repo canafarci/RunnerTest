@@ -6,41 +6,13 @@ namespace Runner.StateMachine
 {
     public class AIMoveState : MonoBehaviour, IState
     {
-        private NavMeshAgent _navMeshAgent;
+        private CharacterController _characterController;
         private readonly float _sampleRange = 3f;
-
-        private Vector3 GetRandomDestination(float range)
-        {
-            Vector3 agentPosition = _navMeshAgent.transform.position;
-            Vector3 randomPoint = agentPosition + Random.insideUnitSphere * range;
-
-            if (randomPoint.z < agentPosition.z)
-            {
-                return GetRandomDestination(_sampleRange);
-            }
-            else
-            {
-                return GetDestination(randomPoint);
-            }
-        }
-
-        private Vector3 GetDestination(Vector3 randomPoint)
-        {
-            if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
-            {
-                Vector3 result = hit.position;
-                return result;
-            }
-            else
-            {
-                return GetRandomDestination(_sampleRange);
-            }
-        }
+        private Vector3 _targetPosition;
 
         public void Enter()
         {
-            Vector3 destination = GetRandomDestination(_sampleRange);
-            _navMeshAgent.SetDestination(destination);
+            _targetPosition = GetRandomPointInArc();
         }
 
         public void Exit()
@@ -51,9 +23,12 @@ namespace Runner.StateMachine
         public CharacterState Tick()
         {
             CharacterState nextState = CharacterState.StayInState;
-            const float distanceRemainingToSwitchState = 0.5f;
+            const float distanceRemainingToSwitchState = 0.25f;
 
-            if (_navMeshAgent.remainingDistance <= distanceRemainingToSwitchState)
+            Vector3 direction = (_targetPosition - transform.position).normalized;
+            _characterController.Move(5f * Time.deltaTime * direction);
+
+            if (Vector3.Distance(transform.position, _targetPosition) < distanceRemainingToSwitchState)
             {
                 nextState = CharacterState.DecideState;
             }
@@ -61,11 +36,20 @@ namespace Runner.StateMachine
             return nextState;
         }
 
+        private Vector3 GetRandomPointInArc()
+        {
+            float angle = Random.Range(-45, 45); //90 degree arc witch center looking towards the end point
+            float radian = angle * Mathf.Deg2Rad;
+            Vector3 positionInArc = new Vector3(Mathf.Sin(radian), 0, Mathf.Cos(radian));
+
+            return transform.position + positionInArc * _sampleRange;
+        }
+
         //Initialization
         [Inject]
-        private void Init(NavMeshAgent navMeshAgent)
+        private void Init([Inject(Id = CharacterState.AIMoveState)] CharacterController characterController)
         {
-            _navMeshAgent = navMeshAgent;
+            _characterController = characterController;
         }
     }
 }

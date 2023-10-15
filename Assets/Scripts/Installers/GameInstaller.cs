@@ -2,6 +2,8 @@ using Zenject;
 using Runner.Input;
 using UnityEngine;
 using Runner.ScriptableObjects;
+using Runner.StateMachine;
+using Runner.PlayerMovement;
 
 namespace Runner.Installers
 {
@@ -12,10 +14,27 @@ namespace Runner.Installers
         public override void InstallBindings()
         {
             //Input
-            Container.Bind<Joystick>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<IInputReader>().To<JoystickInputReader>().AsSingle();
-            Container.Bind<CharacterController>().FromNewComponentOn(_playerEntity).AsSingle();
-            Container.Bind<PlayerConfigSO>().FromInstance(_playerConfiguration);
+            Container.Bind<Joystick>()
+                .FromComponentInHierarchy()
+                .AsSingle();
+
+            Container.Bind<IInputReader>()
+                .To<JoystickInputReader>()
+                .AsSingle();
+
+            Container.Bind<CharacterController>()
+                .WithId(MovementComponents.PlayerCharacterController)
+                .FromNewComponentOn(_playerEntity)
+                .AsSingle();
+
+            Container.Bind<CharacterController>()
+                .WithId(CharacterState.AIMoveState)
+                .FromComponentInChildren()
+                .AsTransient();
+
+            Container.Bind<PlayerConfigSO>()
+                .FromInstance(_playerConfiguration)
+                .AsSingle();
 
         }
     }
