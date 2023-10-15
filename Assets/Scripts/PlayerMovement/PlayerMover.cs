@@ -1,4 +1,5 @@
 using Runner.Input;
+using Runner.ScriptableObjects;
 using UnityEngine;
 using Zenject;
 
@@ -6,10 +7,11 @@ namespace Runner.PlayerMovement
 {
     public class PlayerMover
     {
-
+        //variables
+        private readonly float _speed;
         //dependencies
-        private IInputReader _inputReader;
-        private CharacterController _characterController;
+        private readonly IInputReader _inputReader;
+        private readonly CharacterController _characterController;
 
         public void Move()
         {
@@ -18,22 +20,18 @@ namespace Runner.PlayerMovement
 
             Vector3 movement = new Vector3(input.x, 0f, input.y);
 
-            const float speed = 5f;
-
-            _characterController.Move(speed * Time.deltaTime * movement);
+            _characterController.Move(_speed * Time.deltaTime * movement);
         }
 
         //initialization
         [Inject]
-        private void Init(IInputReader reader, CharacterController characterController)
+        private PlayerMover(IInputReader reader, CharacterController characterController, PlayerConfigSO config)
         {
             _inputReader = reader;
             _characterController = characterController;
-
-            _characterController.height = 2.4f;
-            _characterController.center = new Vector3(0f, 1.2f, 0f);
+            _speed = config.PlayerSpeed;
+            _characterController.height = config.PlayerHeight;
+            _characterController.center = new Vector3(0f, config.PlayerHeight / 2f, 0f);
         }
-
-
     }
 }

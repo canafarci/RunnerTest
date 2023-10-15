@@ -3,32 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Runner.State
+namespace Runner.StateMachine
 {
     public abstract class WaitState : IState
     {
-        protected float _waitDuration;
-        private float _timeLeft;
-        protected IState _nextState;
-        public virtual void Enter()
-        {
-            _timeLeft = _waitDuration;
-        }
+        protected float _timeLeft;
+        protected CharacterState _nextState;
+        public abstract void Enter();
 
         public void Exit() { }
 
-        public IState Tick()
+        public virtual CharacterState Tick()
         {
             _timeLeft -= Time.deltaTime;
 
-            IState nextState = null;
+            CharacterState nextState = CharacterState.StayInState;
 
             if (_timeLeft < 0f)
             {
-                nextState = _nextState;
-
+                nextState = OnTimerExpired();
             }
             return nextState;
+        }
+
+        protected virtual CharacterState OnTimerExpired()
+        {
+            return _nextState;
         }
     }
 }

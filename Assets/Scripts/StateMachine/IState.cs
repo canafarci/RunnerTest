@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Runner.State
+namespace Runner.StateMachine
 {
     public interface IState
     {
         public void Enter();
         public void Exit();
-        public IState Tick();
+        public CharacterState Tick();
     }
 }

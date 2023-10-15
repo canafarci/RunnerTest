@@ -1,9 +1,8 @@
 {
-    "name": "Runner.PlayerMovement",
-    "rootNamespace": "Runner.PlayerMovement",
+    "name": "Runner.StateMachine",
+    "rootNamespace": "Runner.StateMachine",
     "references": [
-        "Runner.Input",
-        "Runner.ScriptableObjects"
+        "GUID:09c5dce3d6f684e459dabd6984ab5088"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

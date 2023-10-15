@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using Zenject;
 
-namespace Runner.State.Tests
+namespace Runner.StateMachine.Tests
 {
     public class player_wait_state_tests : ZenjectIntegrationTestFixture
     {
@@ -17,22 +17,20 @@ namespace Runner.State.Tests
         private void CommonInstall()
         {
             _mockNextState = new Mock<IState>();
-            GameObject obj = new GameObject("parent");
 
             //Arrange
             PreInstall();
 
-            Container.Bind<PlayerStateMachine>().FromNewComponentOn(obj).AsSingle();
+            Container.Bind<PlayerStateMachine>().FromNewComponentOnNewGameObject().AsSingle();
 
             Container.Bind<IState>().
-                WithId(BindingID.PlayerMoveState).
+                WithId(CharacterState.PlayerMoveState).
                 FromInstance(_mockNextState.Object).
                 AsTransient();
 
             Container.Bind<IState>().
-                WithId(BindingID.PlayerWaitForStartState).
+                WithId(CharacterState.PlayerWaitForStartState).
                 To<PlayerWaitForStartState>().
-                FromNewComponentOn(obj).
                 AsSingle();
 
 
@@ -41,7 +39,7 @@ namespace Runner.State.Tests
             Container.Resolve<PlayerStateMachine>();
         }
 
-        [Inject(Id = BindingID.PlayerWaitForStartState)] IState _waitState;
+        [Inject(Id = CharacterState.PlayerWaitForStartState)] IState _waitState;
 
         [UnityTest]
         public IEnumerator wait_time_is_set_when_state_is_created()
@@ -51,7 +49,7 @@ namespace Runner.State.Tests
             yield return null;
 
             //Act
-            float? timeLeft = GetInstanceField(typeof(PlayerWaitForStartState), _waitState, "_waitDuration") as float?;
+            float? timeLeft = GetInstanceField(typeof(PlayerWaitForStartState), _waitState, "_timeLeft") as float?;
 
             //Assert
             Assert.IsNotNull(timeLeft);
@@ -66,7 +64,7 @@ namespace Runner.State.Tests
             yield return null;
 
             //Act
-            float? maxTime = GetInstanceField(typeof(PlayerWaitForStartState), _waitState, "_waitDuration") as float?;
+            float? maxTime = GetInstanceFieldOnBaseClass(typeof(PlayerWaitForStartState), _waitState, "_timeLeft") as float?;
             yield return new WaitForSeconds(0.2f);
             float? timeLeft = GetInstanceFieldOnBaseClass(typeof(PlayerWaitForStartState), _waitState, "_timeLeft") as float?;
 
@@ -83,7 +81,7 @@ namespace Runner.State.Tests
             yield return null;
 
             //Act
-            float? maxTime = GetInstanceField(typeof(PlayerWaitForStartState), _waitState, "_waitDuration") as float?;
+            float? maxTime = GetInstanceField(typeof(PlayerWaitForStartState), _waitState, "_timeLeft") as float?;
             yield return new WaitForSeconds((float)maxTime + 1f);
 
             //Assert

@@ -7,7 +7,7 @@
         "Zenject",
         "Runner",
         "Zenject-TestFramework",
-        "Runner.States"
+        "Runner.StateMachine"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

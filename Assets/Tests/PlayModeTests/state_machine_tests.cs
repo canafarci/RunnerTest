@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using Zenject;
 
-namespace Runner.State.Tests
+namespace Runner.StateMachine.Tests
 {
     public class state_machine_tests : ZenjectIntegrationTestFixture
     {
@@ -22,7 +22,7 @@ namespace Runner.State.Tests
             PreInstall();
 
             Container.Bind<IState>()
-                .WithId(BindingID.PlayerWaitForStartState)
+                .WithId(CharacterState.PlayerWaitForStartState)
                 .FromInstance(_mockState.Object).
                 AsSingle();
 
@@ -41,7 +41,7 @@ namespace Runner.State.Tests
             PlayerStateMachine stateMachine = Container.Resolve<PlayerStateMachine>();
 
             _mockState.Setup(state => state.Tick())
-                     .Returns(_mockNextState.Object);
+                     .Returns(CharacterState.PlayerMoveState);
 
             //Act
             yield return null; //wait for one frame
@@ -59,7 +59,7 @@ namespace Runner.State.Tests
             PlayerStateMachine stateMachine = Container.Resolve<PlayerStateMachine>();
 
             _mockState.Setup(state => state.Tick())
-                     .Returns(_mockNextState.Object);
+                     .Returns(CharacterState.PlayerMoveState);
 
             //Act
             yield return null; //wait for one frame
