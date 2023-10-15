@@ -19,6 +19,12 @@ namespace Runner.Installers
                 To<PlayerMoveState>().
                 AsSingle();
 
+            Container.Bind<IState>().
+                WithId(CharacterState.PlayerRestartState).
+                To<PlayerRestartState>().
+                FromComponentInChildren().
+                AsSingle();
+
             Container.Bind<PlayerMover>().
                 AsSingle();
 
@@ -32,10 +38,15 @@ namespace Runner.Installers
                 To<AIWaitState>().
                 AsTransient();
 
-
             Container.Bind<IState>().
                 WithId(CharacterState.AIMoveState).
                 To<AIMoveState>().
+                FromComponentInChildren().
+                AsTransient();
+
+            Container.Bind<IState>().
+                WithId(CharacterState.AIRestartState).
+                To<AIRestartState>().
                 FromComponentInChildren().
                 AsTransient();
 

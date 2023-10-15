@@ -2,7 +2,7 @@ using Zenject;
 
 namespace Runner.StateMachine
 {
-    public class AIStateMachine : StateMachine
+    public class AIStateMachine : CharacterStateMachine
     {
         private IState _waitState;
         private IState _decideState;
@@ -37,10 +37,13 @@ namespace Runner.StateMachine
         }
 
         [Inject]
-        private void Init([Inject(Id = CharacterState.AIWaitState)] IState currentState)
+        private void Init([Inject(Id = CharacterState.AIWaitState)] IState currentState,
+                          [Inject(Id = CharacterState.AIRestartState)] IState aiRestartState)
         {
             _currentState = currentState;
+            _restartState = aiRestartState;
         }
+
         private void Start()
         {
             _currentState.Enter();

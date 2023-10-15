@@ -3,9 +3,10 @@ using Zenject;
 
 namespace Runner.StateMachine
 {
-    public abstract class StateMachine : MonoBehaviour
+    public abstract class CharacterStateMachine : MonoBehaviour
     {
         protected IState _currentState;
+        protected IState _restartState;
 
         private void Update()
         {
@@ -18,6 +19,10 @@ namespace Runner.StateMachine
             }
         }
 
+        public void ChangeStateToResetState()
+        {
+            TransitionTo(_restartState);
+        }
         protected abstract void ChangeState(CharacterState nextState);
 
         protected void TransitionTo(IState nextState)
@@ -36,6 +41,8 @@ namespace Runner.StateMachine
         PlayerMoveState,
         AIMoveState,
         DecideState,
+        PlayerRestartState,
+        AIRestartState,
         StayInState
     }
 }

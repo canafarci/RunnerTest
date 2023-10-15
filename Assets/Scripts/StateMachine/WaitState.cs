@@ -23,6 +23,7 @@ namespace Runner.StateMachine
             {
                 nextState = OnTimerExpired();
             }
+
             return nextState;
         }
 

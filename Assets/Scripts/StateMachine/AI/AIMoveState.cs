@@ -51,8 +51,9 @@ namespace Runner.StateMachine
         public CharacterState Tick()
         {
             CharacterState nextState = CharacterState.StayInState;
+            const float distanceRemainingToSwitchState = 0.5f;
 
-            if (_navMeshAgent.remainingDistance <= 0f)
+            if (_navMeshAgent.remainingDistance <= distanceRemainingToSwitchState)
             {
                 nextState = CharacterState.DecideState;
             }
