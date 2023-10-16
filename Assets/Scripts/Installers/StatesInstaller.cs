@@ -1,7 +1,8 @@
 using Zenject;
 using Runner.StateMachine;
-using Runner.PlayerMovement;
+using Runner.Movement;
 using UnityEngine.AI;
+using UnityEngine;
 
 namespace Runner.Installers
 {
@@ -23,9 +24,6 @@ namespace Runner.Installers
                 WithId(CharacterState.PlayerRestartState).
                 To<PlayerRestartState>().
                 FromComponentInChildren().
-                AsSingle();
-
-            Container.Bind<PlayerMover>().
                 AsSingle();
 
             Container.Bind<IState>().

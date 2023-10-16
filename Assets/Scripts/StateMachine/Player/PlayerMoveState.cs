@@ -1,16 +1,20 @@
 using UnityEngine;
 using Zenject;
-using Runner.PlayerMovement;
+using Runner.Movement;
+using Runner.Input;
 
 namespace Runner.StateMachine
 {
     public class PlayerMoveState : IState
     {
-        private readonly PlayerMover _playerMover;
+        private readonly IMoveable _playerMover;
+        private readonly IInputReader _inputReader;
 
-        private PlayerMoveState(PlayerMover mover)
+        private PlayerMoveState([Inject(Id = MovementComponents.PlayerCharacterController)] IMoveable mover,
+                                IInputReader reader)
         {
             _playerMover = mover;
+            _inputReader = reader;
         }
 
         public void Enter()
@@ -21,8 +25,9 @@ namespace Runner.StateMachine
         public CharacterState Tick()
         {
             CharacterState nextState = CharacterState.StayInState; // this state can only be exited from an any transition from statemachine
+            Vector2 input = _inputReader.GetInput();
 
-            _playerMover.Move();
+            _playerMover.TickMovement(input);
 
             return nextState;
         }

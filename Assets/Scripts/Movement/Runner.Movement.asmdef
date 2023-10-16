@@ -1,8 +1,7 @@
 {
-    "name": "Runner.PlayerMovement",
-    "rootNamespace": "Runner.PlayerMovement",
+    "name": "Runner.Movement",
+    "rootNamespace": "Runner.Movement",
     "references": [
-        "Runner.Input",
         "Runner.ScriptableObjects"
     ],
     "includePlatforms": [],

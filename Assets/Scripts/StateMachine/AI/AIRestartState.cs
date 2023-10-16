@@ -13,7 +13,7 @@ namespace Runner.StateMachine
 
         //Initialization
         [Inject]
-        private void Init([Inject(Id = CharacterState.AIMoveState)] CharacterController characterController)
+        private void Init(CharacterController characterController)
         {
             _characterController = characterController;
         }

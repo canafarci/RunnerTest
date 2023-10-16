@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Runner.PlayerMovement;
+using Runner.Movement;
 using UnityEngine;
 using Zenject;
 

@@ -1,14 +1,14 @@
+using Runner.Movement;
 using UnityEngine;
-using UnityEngine.AI;
 using Zenject;
 
 namespace Runner.StateMachine
 {
     public class AIMoveState : MonoBehaviour, IState
     {
-        private CharacterController _characterController;
-        private readonly float _sampleRange = 3f;
         private Vector3 _targetPosition;
+        private float _sampleRange = 3f;
+        private IMoveable _aiMover;
 
         public void Enter()
         {
@@ -23,10 +23,10 @@ namespace Runner.StateMachine
         public CharacterState Tick()
         {
             CharacterState nextState = CharacterState.StayInState;
-            const float distanceRemainingToSwitchState = 0.25f;
+            const float distanceRemainingToSwitchState = 0.15f;
 
             Vector3 direction = (_targetPosition - transform.position).normalized;
-            _characterController.Move(5f * Time.deltaTime * direction);
+            _aiMover.TickMovement(new Vector2(direction.x, direction.z));
 
             if (Vector3.Distance(transform.position, _targetPosition) < distanceRemainingToSwitchState)
             {
@@ -45,11 +45,11 @@ namespace Runner.StateMachine
             return transform.position + positionInArc * _sampleRange;
         }
 
-        //Initialization
+        //initialization
         [Inject]
-        private void Init([Inject(Id = CharacterState.AIMoveState)] CharacterController characterController)
+        private void Init([Inject(Id = MovementComponents.AICharacterController)] IMoveable mover)
         {
-            _characterController = characterController;
+            _aiMover = mover;
         }
     }
 }
