@@ -13,9 +13,9 @@ namespace Runner.StateMachine
 
         //Initialization
         [Inject]
-        private void Init(CharacterController characterController)
+        private void Init(Rigidbody rigidbody)
         {
-            _characterController = characterController;
+            _rigidbody = rigidbody;
         }
     }
 }

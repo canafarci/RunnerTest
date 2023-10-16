@@ -16,10 +16,10 @@ namespace Runner.Movement
 
         //Initialization
         [Inject]
-        private void Init(CharacterController characterController,
+        private void Init(Rigidbody rigidbody,
                           AIConfigSO config)
         {
-            _characterController = characterController;
+            _rigidbody = rigidbody;
             _speed = config.AISpeed;
         }
     }

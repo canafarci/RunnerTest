@@ -15,9 +15,9 @@ namespace Runner.StateMachine
 
         //Initialization
         [Inject]
-        private void Init([Inject(Id = MovementComponents.PlayerCharacterController)] CharacterController characterController)
+        private void Init([Inject(Id = MovementComponents.PlayerRigidbody)] Rigidbody rigidbody)
         {
-            _characterController = characterController;
+            _rigidbody = rigidbody;
         }
     }
 }

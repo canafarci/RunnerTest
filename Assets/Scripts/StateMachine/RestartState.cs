@@ -8,7 +8,7 @@ namespace Runner.StateMachine
     public abstract class RestartState : MonoBehaviour, IState
     {
         //dependencies
-        protected CharacterController _characterController;
+        protected Rigidbody _rigidbody;
         //state variables
         protected Vector3 _startPosition;
 
@@ -26,12 +26,12 @@ namespace Runner.StateMachine
 
         public void Exit()
         {
-            _characterController.enabled = true;
+            _rigidbody.isKinematic = false;
         }
 
         private void ResetPosition()
         {
-            _characterController.enabled = false;
+            _rigidbody.isKinematic = true;
             transform.position = _startPosition;
         }
     }

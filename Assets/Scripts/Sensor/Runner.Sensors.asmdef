@@ -1,13 +1,15 @@
 {
-    "name": "Runner.Obstacles",
-    "rootNamespace": "Runner.Obstacles",
-    "references": [],
+    "name": "Runner.Sensors",
+    "rootNamespace": "Runner.Sensor",
+    "references": [
+        "GUID:ed421e765fe26af4dbc8ed116b966695"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

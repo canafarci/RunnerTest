@@ -3,7 +3,9 @@
     "rootNamespace": "Runner.StateMachine",
     "references": [
         "GUID:09c5dce3d6f684e459dabd6984ab5088",
-        "GUID:d1c2e5f72bdffde4983999b09ba7e521"
+        "GUID:d1c2e5f72bdffde4983999b09ba7e521",
+        "GUID:034dae306fc35c14e9ce19a0939db081",
+        "GUID:ed421e765fe26af4dbc8ed116b966695"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

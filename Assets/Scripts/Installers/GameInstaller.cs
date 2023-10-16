@@ -24,19 +24,19 @@ namespace Runner.Installers
                 .To<JoystickInputReader>()
                 .AsSingle();
 
-            Container.Bind<CharacterController>()
+            Container.Bind<Rigidbody>()
                 .FromComponentInChildren()
                 .AsTransient();
 
-            Container.Bind<CharacterController>()
-                .WithId(MovementComponents.PlayerCharacterController)
+            Container.Bind<Rigidbody>()
+                .WithId(MovementComponents.PlayerRigidbody)
                 .FromComponentOn(_playerEntity)
                 .AsTransient();
 
             BindScriptableObjects();
 
             Container.Bind<IMoveable>()
-                .WithId(MovementComponents.PlayerCharacterController)
+                .WithId(MovementComponents.PlayerRigidbody)
                 .To<PlayerMover>()
                 .FromComponentOn(_playerEntity)
                 .AsSingle();

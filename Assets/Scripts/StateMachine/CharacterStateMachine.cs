@@ -8,7 +8,7 @@ namespace Runner.StateMachine
         protected IState _currentState;
         protected IState _restartState;
 
-        private void Update()
+        private void FixedUpdate()
         {
             CharacterState nextState = _currentState.Tick();
 
@@ -39,10 +39,11 @@ namespace Runner.StateMachine
         PlayerWaitForStartState,
         AIWaitState,
         PlayerMoveState,
-        AIMoveState,
+        AIRandomMoveState,
         DecideState,
         PlayerRestartState,
         AIRestartState,
+        AIAvoidStaticObstacleState,
         StayInState
     }
 }

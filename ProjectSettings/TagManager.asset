@@ -8,13 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ForceZone
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - AI
+  - Player
+  - Obstacle
+  - Ground
   - 
   - 
   - 

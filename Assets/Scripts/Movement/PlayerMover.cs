@@ -16,17 +16,17 @@ namespace Runner.Movement
         }
 
         [Inject]
-        private void Init(CharacterController characterController,
+        private void Init(Rigidbody rigidbody,
                           PlayerConfigSO config)
         {
             _speed = config.PlayerSpeed;
-            _characterController = characterController;
+            _rigidbody = rigidbody;
         }
     }
 
     public enum MovementComponents
     {
-        PlayerCharacterController,
+        PlayerRigidbody,
         AICharacterController
     }
 }

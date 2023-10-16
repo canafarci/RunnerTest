@@ -7,16 +7,7 @@ namespace Runner.StateMachine
         private IState _waitState;
         private IState _decideState;
         private IState _moveState;
-
-        [Inject]
-        private void Init([Inject(Id = CharacterState.AIWaitState)] IState waitState,
-                          [Inject(Id = CharacterState.DecideState)] IState decideState,
-                          [Inject(Id = CharacterState.AIMoveState)] IState moveState)
-        {
-            _waitState = waitState;
-            _decideState = decideState;
-            _moveState = moveState;
-        }
+        private IState _avoidStaticObstacleState;
 
         protected override void ChangeState(CharacterState nextState)
         {
@@ -28,8 +19,11 @@ namespace Runner.StateMachine
                 case CharacterState.DecideState:
                     TransitionTo(_decideState);
                     break;
-                case CharacterState.AIMoveState:
+                case CharacterState.AIRandomMoveState:
                     TransitionTo(_moveState);
+                    break;
+                case CharacterState.AIAvoidStaticObstacleState:
+                    TransitionTo(_avoidStaticObstacleState);
                     break;
                 default:
                     break;
@@ -37,11 +31,19 @@ namespace Runner.StateMachine
         }
 
         [Inject]
-        private void Init([Inject(Id = CharacterState.AIWaitState)] IState currentState,
-                          [Inject(Id = CharacterState.AIRestartState)] IState aiRestartState)
+        private void Init([Inject(Id = CharacterState.AIRestartState)] IState restartState,
+                          [Inject(Id = CharacterState.AIAvoidStaticObstacleState)] IState avoidStaticObstacleState,
+                          [Inject(Id = CharacterState.AIWaitState)] IState waitState,
+                          [Inject(Id = CharacterState.DecideState)] IState decideState,
+                          [Inject(Id = CharacterState.AIRandomMoveState)] IState moveState)
         {
-            _currentState = currentState;
-            _restartState = aiRestartState;
+            _waitState = waitState;
+            _restartState = restartState;
+            _avoidStaticObstacleState = avoidStaticObstacleState;
+            _decideState = decideState;
+            _moveState = moveState;
+
+            _currentState = _waitState;
         }
 
         private void Start()

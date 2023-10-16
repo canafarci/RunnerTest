@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd0e45a236ba8c440b4fe0dd6d8bc1ad, type: 3}
   m_Name: PlayerConfigSO
   m_EditorClassIdentifier: 
-  PlayerSpeed: 5
+  PlayerSpeed: 20
   PlayerHeight: 2.4
