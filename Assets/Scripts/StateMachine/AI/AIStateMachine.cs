@@ -7,7 +7,8 @@ namespace Runner.StateMachine
         private IState _waitState;
         private IState _decideState;
         private IState _moveState;
-        private IState _avoidStaticObstacleState;
+        private IState _moveToFixedLocationState;
+        private IState _syncWithObstacleState;
 
         protected override void ChangeState(CharacterState nextState)
         {
@@ -22,8 +23,11 @@ namespace Runner.StateMachine
                 case CharacterState.AIRandomMoveState:
                     TransitionTo(_moveState);
                     break;
-                case CharacterState.AIAvoidStaticObstacleState:
-                    TransitionTo(_avoidStaticObstacleState);
+                case CharacterState.AIMoveToFixedLocationState:
+                    TransitionTo(_moveToFixedLocationState);
+                    break;
+                case CharacterState.AISyncWithObstacleState:
+                    TransitionTo(_syncWithObstacleState);
                     break;
                 default:
                     break;
@@ -32,14 +36,16 @@ namespace Runner.StateMachine
 
         [Inject]
         private void Init([Inject(Id = CharacterState.AIRestartState)] IState restartState,
-                          [Inject(Id = CharacterState.AIAvoidStaticObstacleState)] IState avoidStaticObstacleState,
+                          [Inject(Id = CharacterState.AIMoveToFixedLocationState)] IState moveToFixedLocationState,
+                          [Inject(Id = CharacterState.AISyncWithObstacleState)] IState syncWithObstacleState,
                           [Inject(Id = CharacterState.AIWaitState)] IState waitState,
                           [Inject(Id = CharacterState.DecideState)] IState decideState,
                           [Inject(Id = CharacterState.AIRandomMoveState)] IState moveState)
         {
             _waitState = waitState;
             _restartState = restartState;
-            _avoidStaticObstacleState = avoidStaticObstacleState;
+            _moveToFixedLocationState = moveToFixedLocationState;
+            _syncWithObstacleState = syncWithObstacleState;
             _decideState = decideState;
             _moveState = moveState;
 

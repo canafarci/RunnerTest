@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4909c7768594cd4eb304832894613f2, type: 3}
   m_Name: AIConfigSO
   m_EditorClassIdentifier: 
-  AISpeed: 5
+  AISpeed: 7

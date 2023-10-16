@@ -1,14 +1,12 @@
 {
-    "name": "Runner.Obstacles",
-    "rootNamespace": "Runner.Obstacles",
+    "name": "Runner.Obstacles.Visuals",
+    "rootNamespace": "Runner.Obstacles.Visuals",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [
-        "DOTween.dll"
-    ],
+    "overrideReferences": false,
+    "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],

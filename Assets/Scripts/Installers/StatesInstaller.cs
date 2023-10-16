@@ -55,14 +55,20 @@ namespace Runner.Installers
                      .AsTransient();
 
             Container.Bind<IState>()
-                     .WithId(CharacterState.AIAvoidStaticObstacleState)
-                     .To<AIAvoidStaticObstacleState>()
+                     .WithId(CharacterState.AIMoveToFixedLocationState)
+                     .To<AIMoveToFixedLocationState>()
                      .FromComponentInChildren()
                      .AsTransient();
 
             Container.Bind<IState>()
                      .WithId(CharacterState.DecideState)
                      .To<DecideState>()
+                     .FromComponentInChildren()
+                     .AsTransient();
+
+            Container.Bind<IState>()
+                     .WithId(CharacterState.AISyncWithObstacleState)
+                     .To<AISyncWithObstacleState>()
                      .FromComponentInChildren()
                      .AsTransient();
 

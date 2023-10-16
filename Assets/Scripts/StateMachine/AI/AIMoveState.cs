@@ -6,8 +6,10 @@ namespace Runner.StateMachine
 {
     public abstract class AIMoveState : MonoBehaviour, IState
     {
-        protected Vector3 _targetPosition;
+        private Vector3 _targetPosition;
+        private CharacterState _nextState;
         private IMoveable _aiMover;
+        private const float _distanceRemainingToSwitchState = 0.15f;
 
         public abstract void Enter();
 
@@ -20,18 +22,44 @@ namespace Runner.StateMachine
         {
             CharacterState nextState = CharacterState.StayInState;
 
-            Vector3 direction = (_targetPosition - transform.position).normalized;
+            Vector3 direction = GetDirection();
+
             _aiMover.TickMovement(new Vector2(direction.x, direction.z));
 
-            const float distanceRemainingToSwitchState = 0.15f;
 
-            if (Vector3.Distance(transform.position, _targetPosition) < distanceRemainingToSwitchState)
+            if (CheckExitCondition(_distanceRemainingToSwitchState))
             {
-                nextState = CharacterState.DecideState;
+                nextState = _nextState;
             }
 
             return nextState;
         }
+
+        private Vector3 GetDirection()
+        {
+            Vector3 direction = _targetPosition - transform.position;
+
+            //filter small direction changes
+            if (direction.magnitude < _distanceRemainingToSwitchState)
+            {
+                print(direction.magnitude);
+                direction = Vector3.zero;
+            }
+            else
+            {
+                direction = direction.normalized;
+            }
+
+            return direction;
+        }
+
+        protected virtual bool CheckExitCondition(float distanceRemainingToSwitchState)
+        {
+            return Vector3.Distance(transform.position, _targetPosition) < distanceRemainingToSwitchState;
+        }
+
+        protected void SetNextState(CharacterState state) => _nextState = state;
+        protected void SetTargetPosition(Vector3 pos) => _targetPosition = pos;
 
         //initialization
         [Inject]

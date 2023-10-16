@@ -6,12 +6,13 @@ namespace Runner.StateMachine
 {
     public class AIRandomMoveState : AIMoveState
     {
-
         private float _sampleRange = 1f;
 
         public override void Enter()
         {
-            _targetPosition = GetRandomPointInArc();
+            Vector3 targetPosition = GetRandomPointInArc();
+            SetTargetPosition(targetPosition);
+            SetNextState(CharacterState.DecideState);
         }
 
         private Vector3 GetRandomPointInArc()
@@ -28,7 +29,5 @@ namespace Runner.StateMachine
             Vector3 positionInArc = new Vector3(Mathf.Sin(radian), 0, Mathf.Cos(radian));
             return positionInArc;
         }
-
-
     }
 }

@@ -21,10 +21,16 @@ namespace Runner.StateMachine
             }
             else
             {
-                if (data.ObstacleType == ObstacleType.StaticObstacle)
+                //all obstacles have a valid pass destination
+                _stateVariables.CurrentObstacleData = data;
+
+                if (data.GetObstacleType() == ObstacleType.StaticObstacle)
                 {
-                    _stateVariables.AvoidObstacleDestination = data.MoveDestination.position;
-                    _nextState = CharacterState.AIAvoidStaticObstacleState;
+                    _nextState = CharacterState.AIMoveToFixedLocationState;
+                }
+                else if (data.GetObstacleType() == ObstacleType.SyncableObstacle)
+                {
+                    _nextState = CharacterState.AISyncWithObstacleState;
                 }
             }
 
@@ -35,7 +41,6 @@ namespace Runner.StateMachine
 
         public void Exit()
         {
-            //throw new System.NotImplementedException();
         }
 
         public CharacterState Tick()

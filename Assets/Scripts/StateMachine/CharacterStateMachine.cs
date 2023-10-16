@@ -23,6 +23,7 @@ namespace Runner.StateMachine
         {
             TransitionTo(_restartState);
         }
+
         protected abstract void ChangeState(CharacterState nextState);
 
         protected void TransitionTo(IState nextState)
@@ -43,7 +44,8 @@ namespace Runner.StateMachine
         DecideState,
         PlayerRestartState,
         AIRestartState,
-        AIAvoidStaticObstacleState,
+        AIMoveToFixedLocationState,
+        AISyncWithObstacleState,
         StayInState
     }
 }

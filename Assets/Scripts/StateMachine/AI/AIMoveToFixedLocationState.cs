@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runner.Obstacles;
 using UnityEngine;
 using Zenject;
 
 namespace Runner.StateMachine
 {
-    public class AIAvoidStaticObstacleState : AIMoveState
+    public class AIMoveToFixedLocationState : AIMoveState
     {
         private AIStateVariables _stateVariables;
 
         public override void Enter()
         {
-            _targetPosition = _stateVariables.AvoidObstacleDestination;
+            SetTargetPosition(_stateVariables.CurrentObstacleData.GetTargetPosition());
+            SetNextState(CharacterState.DecideState);
         }
 
         [Inject]
