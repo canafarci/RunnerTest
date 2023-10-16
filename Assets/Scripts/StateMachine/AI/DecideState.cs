@@ -45,7 +45,6 @@ namespace Runner.StateMachine
 
         public CharacterState Tick()
         {
-            UnityEngine.Debug.Log("Decided");
             return _nextState;
         }
 

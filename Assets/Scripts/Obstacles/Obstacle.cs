@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Runner.Obstacles
@@ -15,12 +16,12 @@ namespace Runner.Obstacles
     {
         [SerializeField] private ObstacleType _obstacleType;
         [SerializeField] private Transform _targetLocation;
-        [SerializeField] private Transform _waitLocation;
+        [SerializeField] private ObstacleWaitPoint[] _waitLocations;
         [SerializeField] private bool _isPassable;
 
         public ObstacleType GetObstacleType() => _obstacleType;
         public Vector3 GetTargetPosition() => _targetLocation.position;
-        public Vector3 GetWaitPosition() => _waitLocation.position;
+        public ObstacleWaitPoint GetWaitPoint() => _waitLocations.Where(x => !x.IsOccupied()).FirstOrDefault();
         public bool IsObstaclePassable() => _isPassable;
         public void SetIsObstaclePassable(bool value) => _isPassable = value;
     }

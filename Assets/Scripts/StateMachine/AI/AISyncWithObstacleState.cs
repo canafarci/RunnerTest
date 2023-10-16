@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runner.Obstacles;
 using UnityEngine;
 using Zenject;
 
@@ -8,16 +9,36 @@ namespace Runner.StateMachine
     public class AISyncWithObstacleState : AIMoveState
     {
         private AIStateVariables _stateVariables;
+        private bool _transitionToRandomMove = false;
+        private ObstacleWaitPoint _waitPoint;
         public override void Enter()
         {
-            SetNextState(CharacterState.AIMoveToFixedLocationState);
-            SetTargetPosition(_stateVariables.CurrentObstacleData.GetWaitPosition());
+            _waitPoint = _stateVariables.CurrentObstacleData.GetWaitPoint();
+            //if there is no avaliable wait positions, exit the current state
+            if (_waitPoint == null)
+            {
+                _transitionToRandomMove = true;
+                SetNextState(CharacterState.AIRandomMoveState);
+            }
+            else
+            {
+                _waitPoint.SetIsOccupied(true);
+                SetNextState(CharacterState.AIMoveToFixedLocationState);
+                SetTargetPosition(_waitPoint.transform.position);
+            }
         }
 
         protected override bool CheckExitCondition(float distanceRemainingToSwitchState)
         {
-            return base.CheckExitCondition(distanceRemainingToSwitchState)
-                && _stateVariables.CurrentObstacleData.IsObstaclePassable();
+            return _transitionToRandomMove ||
+                        (base.CheckExitCondition(distanceRemainingToSwitchState) &&
+                        _stateVariables.CurrentObstacleData.IsObstaclePassable());
+        }
+        public override void Exit()
+        {
+            _transitionToRandomMove = false;
+            _waitPoint?.SetIsOccupied(false);
+            _waitPoint = null;
         }
 
         [Inject]
@@ -25,5 +46,6 @@ namespace Runner.StateMachine
         {
             _stateVariables = variables;
         }
+
     }
 }

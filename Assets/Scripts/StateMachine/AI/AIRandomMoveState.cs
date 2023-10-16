@@ -6,7 +6,7 @@ namespace Runner.StateMachine
 {
     public class AIRandomMoveState : AIMoveState
     {
-        private float _sampleRange = 1f;
+        private float _sampleRange = 2f;
 
         public override void Enter()
         {
@@ -28,6 +28,11 @@ namespace Runner.StateMachine
             float radian = angle * Mathf.Deg2Rad;
             Vector3 positionInArc = new Vector3(Mathf.Sin(radian), 0, Mathf.Cos(radian));
             return positionInArc;
+        }
+
+        public override void Exit()
+        {
+
         }
     }
 }

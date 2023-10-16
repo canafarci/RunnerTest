@@ -13,19 +13,27 @@ namespace Runner.Obstacles
 
         private void Start()
         {
-            Sequence moveInSequence = DOTween.Sequence();
-            moveInSequence.Append(_stickTransform.DOLocalMoveX(_moveInTargetX, 1f));
-            moveInSequence.onComplete = () => _obstacleData.SetIsObstaclePassable(true);
+            Sequence moveInSequence = CreateMoveSequence(true, 0.8f);
 
-            Sequence moveOutSequence = DOTween.Sequence();
-            moveOutSequence.Append(_stickTransform.DOLocalMoveX(_moveOutTargetX, 1f));
-            moveOutSequence.onComplete = () => _obstacleData.SetIsObstaclePassable(false);
+            Sequence moveOutSequence = CreateMoveSequence(false, 1.6f);
 
             Sequence totalSequence = DOTween.Sequence();
 
             totalSequence.Append(moveInSequence)
                          .Append(moveOutSequence)
                          .SetLoops(-1, LoopType.Restart);
+        }
+
+        private Sequence CreateMoveSequence(bool isPassableAfter, float duration)
+        {
+            Sequence moveSequence = DOTween.Sequence();
+
+            float target = isPassableAfter ? _moveInTargetX : _moveOutTargetX;
+
+            moveSequence.Append(_stickTransform.DOLocalMoveX(target, duration));
+            moveSequence.onComplete = () => _obstacleData.SetIsObstaclePassable(isPassableAfter);
+
+            return moveSequence;
         }
     }
 }

@@ -13,10 +13,7 @@ namespace Runner.StateMachine
 
         public abstract void Enter();
 
-        public void Exit()
-        {
-
-        }
+        public abstract void Exit();
 
         public CharacterState Tick()
         {
@@ -42,7 +39,6 @@ namespace Runner.StateMachine
             //filter small direction changes
             if (direction.magnitude < _distanceRemainingToSwitchState)
             {
-                print(direction.magnitude);
                 direction = Vector3.zero;
             }
             else

@@ -28,10 +28,13 @@ namespace Runner.Sensors
         {
             Ray ray = new Ray(transform.position + Vector3.up, transform.TransformDirection(Vector3.forward));
 
-            if (Physics.Raycast(ray, out RaycastHit hit, _checkDistance, _checkLayerMask))
+            if (Physics.Raycast(ray,
+                                out RaycastHit hit,
+                                _checkDistance,
+                                _checkLayerMask,
+                                QueryTriggerInteraction.Collide))
             {
                 Obstacle obstacle = hit.transform.GetComponent<Obstacle>();
-                print(obstacle);
                 return obstacle;
             }
             else
