@@ -20,7 +20,7 @@ namespace Runner.StateMachine
                 _transitionToRandomMove = true;
                 SetNextState(CharacterState.AIRandomMoveState);
             }
-            else
+            else //a waitpoint is avaliable
             {
                 _waitPoint.SetIsOccupied(true);
                 SetNextState(CharacterState.AIMoveToFixedLocationState);
@@ -30,9 +30,9 @@ namespace Runner.StateMachine
 
         protected override bool CheckExitCondition(float distanceRemainingToSwitchState)
         {
-            return _transitionToRandomMove ||
-                        (base.CheckExitCondition(distanceRemainingToSwitchState) &&
-                        _stateVariables.CurrentObstacleData.IsObstaclePassable());
+            return _transitionToRandomMove || //exit state if there is no wait point
+                    (base.CheckExitCondition(distanceRemainingToSwitchState) &&
+                    _stateVariables.CurrentObstacleData.IsObstaclePassable());
         }
         public override void Exit()
         {

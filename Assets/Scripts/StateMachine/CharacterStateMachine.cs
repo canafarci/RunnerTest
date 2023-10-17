@@ -7,6 +7,7 @@ namespace Runner.StateMachine
     {
         protected IState _currentState;
         protected IState _restartState;
+        [SerializeField] private string _currentStateName;
 
         private void FixedUpdate()
         {
@@ -31,6 +32,7 @@ namespace Runner.StateMachine
             _currentState.Exit();
             _currentState = nextState;
             _currentState.Enter();
+            _currentStateName = _currentState.ToString();
         }
 
     }

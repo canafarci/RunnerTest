@@ -20,7 +20,7 @@ namespace Runner.StateMachine
         private Vector3 RandomizeDestinationPoint()
         {
             Vector3 destination = _stateVariables.CurrentObstacleData.GetTargetPosition();
-            Vector3 noise = 3f * Random.insideUnitSphere;
+            Vector3 noise = 2f * Random.insideUnitSphere;
             noise.y = 0f;
             destination += noise;
             return destination;

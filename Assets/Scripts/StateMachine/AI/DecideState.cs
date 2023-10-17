@@ -31,6 +31,7 @@ namespace Runner.StateMachine
                 else if (data.GetObstacleType() == ObstacleType.SyncableObstacle)
                 {
                     _nextState = CharacterState.AISyncWithObstacleState;
+                    print(data);
                 }
             }
 
