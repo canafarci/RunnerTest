@@ -13,7 +13,7 @@ namespace Runner.StateMachine
         }
         public override void Enter()
         {
-            _timeLeft = 3f;
+            _timeLeft = 0f;
         }
     }
 }

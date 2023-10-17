@@ -20,9 +20,9 @@ namespace Runner.StateMachine
             }
         }
 
-        public void ChangeStateToResetState()
+        public void AnyStateChange(CharacterState nextState)
         {
-            TransitionTo(_restartState);
+            ChangeState(nextState);
         }
 
         protected abstract void ChangeState(CharacterState nextState);
@@ -42,6 +42,7 @@ namespace Runner.StateMachine
         PlayerWaitForStartState,
         AIWaitState,
         PlayerMoveState,
+        PlayerPaintState,
         AIRandomMoveState,
         DecideState,
         PlayerRestartState,
@@ -50,6 +51,8 @@ namespace Runner.StateMachine
         AISyncWithObstacleState,
         AIMoveInRotatingPlatformState,
         AIMoveTowardsCenterState,
+        AIEndGameState,
+        AICelebrateState,
         StayInState
     }
 }

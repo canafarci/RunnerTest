@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Runner.Obstacles;
+using Runner.Containers;
 using UnityEngine;
 using Zenject;
 
@@ -10,7 +8,7 @@ namespace Runner.StateMachine
     {
         private AIStateVariables _stateVariables;
         private bool _transitionToRandomMove = false;
-        private ObstacleWaitPoint _waitPoint;
+        private WaitPoint _waitPoint;
         public override void Enter()
         {
             _waitPoint = _stateVariables.GetWaitPoint();
@@ -22,7 +20,6 @@ namespace Runner.StateMachine
             }
             else //a waitpoint is avaliable
             {
-                _waitPoint.SetIsOccupied(true);
                 SetNextState(CharacterState.AIMoveToFixedLocationState);
                 SetTargetPosition(_waitPoint.transform.position);
             }

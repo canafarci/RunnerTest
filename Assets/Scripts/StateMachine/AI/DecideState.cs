@@ -1,7 +1,7 @@
 using Runner.Sensors;
-using Runner.Obstacles;
 using Zenject;
 using UnityEngine;
+using Runner.Containers;
 
 namespace Runner.StateMachine
 {

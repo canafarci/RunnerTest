@@ -1,15 +1,27 @@
 using Zenject;
 using Runner.StateMachine;
-using Runner.Movement;
-using UnityEngine.AI;
 using UnityEngine;
 using Runner.Sensors;
+using Runner.Containers;
 
 namespace Runner.Installers
 {
     public class StatesInstaller : MonoInstaller<StatesInstaller>
     {
+        [SerializeField] private EndGameWaitPoints _endGameWaitPoints;
         public override void InstallBindings()
+        {
+            BindPlayerStates();
+
+            Container.Bind<CharacterStateMachine>()
+                     .FromComponentInChildren()
+                     .AsTransient();
+
+
+            BindAIStates();
+        }
+
+        private void BindPlayerStates()
         {
             Container.Bind<IState>()
                      .WithId(CharacterState.PlayerWaitForStartState)
@@ -27,12 +39,10 @@ namespace Runner.Installers
                      .FromComponentInChildren()
                      .AsSingle();
 
-            Container.Bind<CharacterStateMachine>()
-                     .FromComponentInChildren()
-                     .AsTransient();
-
-
-            BindAIStates();
+            Container.Bind<IState>()
+                     .WithId(CharacterState.PlayerPaintState)
+                     .To<PlayerPaintState>()
+                     .AsSingle();
         }
 
         private void BindAIStates()
@@ -84,6 +94,18 @@ namespace Runner.Installers
                      .FromComponentInChildren()
                      .AsTransient();
 
+            Container.Bind<IState>()
+                     .WithId(CharacterState.AIEndGameState)
+                     .To<AIEndGameState>()
+                     .FromComponentInChildren()
+                     .AsTransient();
+
+            Container.Bind<IState>()
+                     .WithId(CharacterState.AICelebrateState)
+                     .To<AICelebrateState>()
+                     .FromComponentInChildren()
+                     .AsTransient();
+
             BindAIDependencies();
         }
 
@@ -96,6 +118,10 @@ namespace Runner.Installers
             Container.Bind<AISensor>()
                     .FromComponentInChildren()
                     .AsTransient();
+
+            Container.Bind<EndGameWaitPoints>()
+                    .FromInstance(_endGameWaitPoints)
+                    .AsSingle();
         }
     }
 }

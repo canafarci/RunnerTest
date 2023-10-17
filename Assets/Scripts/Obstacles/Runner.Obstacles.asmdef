@@ -1,7 +1,9 @@
 {
     "name": "Runner.Obstacles",
     "rootNamespace": "Runner.Obstacles",
-    "references": [],
+    "references": [
+        "GUID:227a48a1851fac544bfd97c10ba180ca"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

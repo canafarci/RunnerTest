@@ -11,6 +11,8 @@ namespace Runner.StateMachine
         private IState _syncWithObstacleState;
         private IState _moveInRotatingPlatformState;
         private IState _moveTowardsCenterState;
+        private IState _endGameState;
+        private IState _celebrateState;
 
         protected override void ChangeState(CharacterState nextState)
         {
@@ -37,6 +39,15 @@ namespace Runner.StateMachine
                 case CharacterState.AIMoveTowardsCenterState:
                     TransitionTo(_moveTowardsCenterState);
                     break;
+                case CharacterState.AIRestartState:
+                    TransitionTo(_restartState);
+                    break;
+                case CharacterState.AIEndGameState:
+                    TransitionTo(_endGameState);
+                    break;
+                case CharacterState.AICelebrateState:
+                    TransitionTo(_celebrateState);
+                    break;
                 default:
                     break;
             }
@@ -50,6 +61,8 @@ namespace Runner.StateMachine
                           [Inject(Id = CharacterState.AIMoveTowardsCenterState)] IState moveTowardsCenterState,
                           [Inject(Id = CharacterState.AIWaitState)] IState waitState,
                           [Inject(Id = CharacterState.DecideState)] IState decideState,
+                          [Inject(Id = CharacterState.AIEndGameState)] IState endGameState,
+                          [Inject(Id = CharacterState.AICelebrateState)] IState celebrateState,
                           [Inject(Id = CharacterState.AIRandomMoveState)] IState moveState)
         {
             _waitState = waitState;
@@ -58,6 +71,8 @@ namespace Runner.StateMachine
             _syncWithObstacleState = syncWithObstacleState;
             _moveInRotatingPlatformState = moveInRotatingPlatformState;
             _moveTowardsCenterState = moveTowardsCenterState;
+            _endGameState = endGameState;
+            _celebrateState = celebrateState;
             _decideState = decideState;
             _moveState = moveState;
 

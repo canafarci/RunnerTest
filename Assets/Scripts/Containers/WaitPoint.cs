@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Runner.Obstacles
+namespace Runner.Containers
 {
-    public class ObstacleWaitPoint : MonoBehaviour
+    public class WaitPoint : MonoBehaviour
     {
         private bool _isOccupied;
 
