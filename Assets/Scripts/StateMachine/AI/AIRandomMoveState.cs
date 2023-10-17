@@ -17,7 +17,7 @@ namespace Runner.StateMachine
 
         private Vector3 GetRandomPointInArc()
         {
-            float angle = Random.Range(-45, 45); //90 degree arc witch center looking towards the end point
+            float angle = Random.Range(-25, 25); //50 degree arc witch center looking towards the end point
             Vector3 positionInArc = ConvertAngleToPositionInArc(angle);
 
             return transform.position + positionInArc * _sampleRange;

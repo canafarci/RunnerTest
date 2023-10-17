@@ -11,18 +11,20 @@ namespace Runner.Obstacles
         private const float _leftX = -7f;
         private const float _rightX = 7f;
         private const float _duration = 1.6f;
+        private Sequence _moveLeftSequence;
+        private Sequence _moveRightSequence;
 
         private void Start()
         {
-            Sequence passableSequence = CreateMoveSequence(true);
+            _moveLeftSequence = CreateMoveSequence(_leftX);
 
-            Sequence unpassableSequence = CreateMoveSequence(false);
+            _moveRightSequence = CreateMoveSequence(_rightX);
 
             CreateRotateTween();
 
             Sequence totalSequence = DOTween.Sequence();
-            totalSequence.Append(passableSequence)
-                         .Append(unpassableSequence)
+            totalSequence.Append(_moveLeftSequence)
+                         .Append(_moveRightSequence)
                          .SetLoops(-1, LoopType.Restart);
 
             CreateRotateTween();
@@ -39,16 +41,27 @@ namespace Runner.Obstacles
                         .SetLoops(-1, LoopType.Restart);
         }
 
-        private Sequence CreateMoveSequence(bool isPassableAfter)
+        private Sequence CreateMoveSequence(float target)
         {
             Sequence moveSequence = DOTween.Sequence();
 
-            float target = isPassableAfter ? _leftX : _rightX;
-
-            moveSequence.Append(_stickTransform.DOLocalMoveX(target, _duration));
-            moveSequence.onComplete = () => _obstacleData.SetIsObstaclePassable(isPassableAfter);
+            moveSequence.Append(
+                _stickTransform.DOLocalMoveX(target, _duration)
+                .SetEase(Ease.Linear));
 
             return moveSequence;
+        }
+
+        private void Update()
+        {
+            if (_moveRightSequence.ElapsedPercentage() > 0.25f)
+            {
+                _obstacleData.SetIsObstaclePassable(true);
+            }
+            else
+            {
+                _obstacleData.SetIsObstaclePassable(false);
+            }
         }
 
 

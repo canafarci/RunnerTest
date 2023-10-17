@@ -22,7 +22,7 @@ namespace Runner.StateMachine
         {
             if (_timesWaitedBefore == 0)
             {
-                float startWaitDuration = 3f;
+                float startWaitDuration = 0f;
                 _timeLeft = startWaitDuration;
             }
             else

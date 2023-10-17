@@ -9,7 +9,7 @@ namespace Runner.StateMachine
         private Vector3 _targetPosition;
         private CharacterState _nextState;
         private IMoveable _aiMover;
-        private const float _distanceRemainingToSwitchState = 0.15f;
+        private const float _distanceRemainingToSwitchState = 0.5f;
 
         public abstract void Enter();
 
@@ -19,12 +19,12 @@ namespace Runner.StateMachine
         {
             CharacterState nextState = CharacterState.StayInState;
 
-            Vector3 direction = GetDirection();
+            Vector3 direction = GetDirection(_targetPosition);
 
             _aiMover.TickMovement(new Vector2(direction.x, direction.z));
 
 
-            if (CheckExitCondition(_distanceRemainingToSwitchState))
+            if (CheckExitCondition(transform.position, _targetPosition, _distanceRemainingToSwitchState))
             {
                 nextState = _nextState;
             }
@@ -32,9 +32,9 @@ namespace Runner.StateMachine
             return nextState;
         }
 
-        private Vector3 GetDirection()
+        protected Vector3 GetDirection(Vector3 targetPosition)
         {
-            Vector3 direction = _targetPosition - transform.position;
+            Vector3 direction = targetPosition - transform.position;
 
             //filter small direction changes
             if (direction.magnitude < _distanceRemainingToSwitchState)
@@ -49,9 +49,17 @@ namespace Runner.StateMachine
             return direction;
         }
 
-        protected virtual bool CheckExitCondition(float distanceRemainingToSwitchState)
+        protected virtual bool CheckExitCondition(Vector3 currentPosition, Vector3 targetPosition, float distanceRemainingToSwitchState)
         {
-            return Vector3.Distance(transform.position, _targetPosition) < distanceRemainingToSwitchState;
+            float distanceRemaining = Vector3.Distance(currentPosition, targetPosition);
+            return distanceRemaining < distanceRemainingToSwitchState;
+        }
+
+        protected Vector3 GetRandomPositionInSphere(float radius)
+        {
+            Vector3 noise = radius * Random.insideUnitSphere;
+            noise.y = 0f;
+            return noise;
         }
 
         protected void SetNextState(CharacterState state) => _nextState = state;

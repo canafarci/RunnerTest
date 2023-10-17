@@ -29,6 +29,7 @@ namespace Runner.Obstacles
     public enum ObstacleType
     {
         StaticObstacle,
-        SyncableObstacle
+        SyncableObstacle,
+        RotatingObstacle
     }
 }

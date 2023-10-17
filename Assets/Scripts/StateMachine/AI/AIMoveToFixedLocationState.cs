@@ -19,16 +19,16 @@ namespace Runner.StateMachine
 
         private Vector3 RandomizeDestinationPoint()
         {
-            Vector3 destination = _stateVariables.CurrentObstacleData.GetTargetPosition();
-            Vector3 noise = 2f * Random.insideUnitSphere;
-            noise.y = 0f;
+            Vector3 destination = _stateVariables.GetTargetPosition();
+
+            Vector3 noise = GetRandomPositionInSphere(2f);
             destination += noise;
             return destination;
         }
 
         public override void Exit()
         {
-            _stateVariables.CurrentObstacleData = null;
+            _stateVariables.ClearObstacleData();
         }
 
         [Inject]

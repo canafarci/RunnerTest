@@ -72,6 +72,18 @@ namespace Runner.Installers
                      .FromComponentInChildren()
                      .AsTransient();
 
+            Container.Bind<IState>()
+                     .WithId(CharacterState.AIMoveInRotatingPlatformState)
+                     .To<AIMoveInRotatingPlatformState>()
+                     .FromComponentInChildren()
+                     .AsTransient();
+
+            Container.Bind<IState>()
+                     .WithId(CharacterState.AIMoveTowardsCenterState)
+                     .To<AIMoveTowardsCenterState>()
+                     .FromComponentInChildren()
+                     .AsTransient();
+
             BindAIDependencies();
         }
 

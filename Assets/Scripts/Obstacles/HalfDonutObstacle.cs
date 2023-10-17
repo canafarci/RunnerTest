@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -12,7 +13,6 @@ namespace Runner.Obstacles
         private const float _moveOutTargetX = 0.1542f;
         private Sequence _moveOutSequence;
         private Sequence _moveInSequence;
-
         private void Start()
         {
             _moveInSequence = CreateMoveSequence(true, 0.8f);

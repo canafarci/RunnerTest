@@ -22,7 +22,7 @@ namespace Runner.StateMachine
             else
             {
                 //all obstacles have a valid pass destination
-                _stateVariables.CurrentObstacleData = data;
+                _stateVariables.SetObstacleData(data);
 
                 if (data.GetObstacleType() == ObstacleType.StaticObstacle)
                 {
@@ -31,13 +31,12 @@ namespace Runner.StateMachine
                 else if (data.GetObstacleType() == ObstacleType.SyncableObstacle)
                 {
                     _nextState = CharacterState.AISyncWithObstacleState;
-                    print(data);
+                }
+                else if (data.GetObstacleType() == ObstacleType.RotatingObstacle)
+                {
+                    _nextState = CharacterState.AIMoveInRotatingPlatformState;
                 }
             }
-
-            //move to fixed pos if it is static
-            //async movement if dynamic
-            //move sideways if turning obstacle
         }
 
         public void Exit()

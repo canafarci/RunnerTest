@@ -13,7 +13,7 @@ namespace Runner.StateMachine
         private ObstacleWaitPoint _waitPoint;
         public override void Enter()
         {
-            _waitPoint = _stateVariables.CurrentObstacleData.GetWaitPoint();
+            _waitPoint = _stateVariables.GetWaitPoint();
             //if there is no avaliable wait positions, exit the current state
             if (_waitPoint == null)
             {
@@ -28,11 +28,11 @@ namespace Runner.StateMachine
             }
         }
 
-        protected override bool CheckExitCondition(float distanceRemainingToSwitchState)
+        protected override bool CheckExitCondition(Vector3 currentPosition, Vector3 targetPosition, float distanceRemainingToSwitchState)
         {
             return _transitionToRandomMove || //exit state if there is no wait point
-                    (base.CheckExitCondition(distanceRemainingToSwitchState) &&
-                    _stateVariables.CurrentObstacleData.IsObstaclePassable());
+                    (base.CheckExitCondition(currentPosition, targetPosition, distanceRemainingToSwitchState) &&
+                    _stateVariables.IsCurrentObstaclePassable());
         }
         public override void Exit()
         {

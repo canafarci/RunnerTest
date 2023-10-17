@@ -48,6 +48,8 @@ namespace Runner.StateMachine
         AIRestartState,
         AIMoveToFixedLocationState,
         AISyncWithObstacleState,
+        AIMoveInRotatingPlatformState,
+        AIMoveTowardsCenterState,
         StayInState
     }
 }
