@@ -42,6 +42,7 @@ namespace Runner.Installers
             Container.Bind<IState>()
                      .WithId(CharacterState.PlayerPaintState)
                      .To<PlayerPaintState>()
+                     .FromComponentInChildren()
                      .AsSingle();
         }
 

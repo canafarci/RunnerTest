@@ -1,0 +1,17 @@
+{
+    "name": "Runner.Camera",
+    "rootNamespace": "",
+    "references": [
+        "Runner.StateMachine",
+        "Cinemachine"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

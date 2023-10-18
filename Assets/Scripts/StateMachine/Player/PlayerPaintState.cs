@@ -1,24 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using Zenject;
 
 namespace Runner.StateMachine
 {
-    public class PlayerPaintState : IState
+    public class PlayerPaintState : MonoBehaviour, IState
     {
+        public EventHandler OnPlayerEnteredPaintState;
+        private Rigidbody _rigidbody;
+
         public void Enter()
         {
-            throw new System.NotImplementedException();
+            OnPlayerEnteredPaintState?.Invoke(this, EventArgs.Empty);
+            _rigidbody.isKinematic = true;
         }
 
         public void Exit()
         {
-            throw new System.NotImplementedException();
+
         }
 
         public CharacterState Tick()
         {
-            throw new System.NotImplementedException();
+            return CharacterState.StayInState;
         }
+        [Inject]
+        private void Init(Rigidbody rigidbody)
+        {
+            _rigidbody = rigidbody;
+        }
+
     }
 }

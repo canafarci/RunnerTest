@@ -2,8 +2,9 @@ using Zenject;
 using Runner.Input;
 using UnityEngine;
 using Runner.ScriptableObjects;
-using Runner.StateMachine;
+using Cinemachine;
 using Runner.Movement;
+using Runner.StateMachine;
 
 namespace Runner.Installers
 {
@@ -46,8 +47,16 @@ namespace Runner.Installers
                 .To<AIMover>()
                 .FromComponentInChildren()
                 .AsTransient();
-        }
 
+            Container.Bind<CinemachineVirtualCamera>()
+                .FromComponentInChildren()
+                .AsTransient();
+
+            Container.Bind<PlayerPaintState>()
+                .FromComponentInHierarchy()
+                .AsCached();
+
+        }
         private void BindScriptableObjects()
         {
             Container.Bind<PlayerConfigSO>()
@@ -58,5 +67,10 @@ namespace Runner.Installers
                 .FromInstance(_aiConfiguration)
                 .AsSingle();
         }
+    }
+
+    public enum ComponentID
+    {
+        PlayerPaintState
     }
 }

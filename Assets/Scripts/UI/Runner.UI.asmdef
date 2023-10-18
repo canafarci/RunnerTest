@@ -1,0 +1,16 @@
+{
+    "name": "Runner.UI",
+    "rootNamespace": "Runner.UI",
+    "references": [
+        "GUID:7c09457f5b7c99d4bacaad22748bafe5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
