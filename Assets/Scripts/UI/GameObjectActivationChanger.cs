@@ -7,18 +7,21 @@ using Zenject;
 
 namespace Runner.UI
 {
-    public class JoystickDisabler : MonoBehaviour
+    public class GameObjectActivationChanger : MonoBehaviour
     {
+        [SerializeField] private bool _disableOnStart;
         private PlayerPaintState _paintState;
 
         private void Start()
         {
             _paintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
+            gameObject.SetActive(!_disableOnStart);
         }
 
         private void PlayerPaintState_PlayerEnteredPaintStateHandler(object sender, EventArgs e)
         {
-            gameObject.SetActive(false);
+            bool isActive = gameObject.activeSelf;
+            gameObject.SetActive(!isActive);
         }
 
         [Inject]
