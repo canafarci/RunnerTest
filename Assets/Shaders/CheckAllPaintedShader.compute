@@ -1,0 +1,19 @@
+#pragma kernel CSMain
+
+Texture2D<float3> InputTex;
+RWStructuredBuffer<int> PaintedPixelArray;
+
+[numthreads(8, 4, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float3 sample = InputTex[id.xy];
+    int val;
+
+    uint w, h;
+    InputTex.GetDimensions(w, h);
+
+    if (sample.x != 1 || sample.y != 1 || sample.z != 1)
+    {
+        InterlockedExchange(PaintedPixelArray[id.x + id.y * w], 1, val);
+    }
+}

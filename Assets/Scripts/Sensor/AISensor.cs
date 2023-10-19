@@ -8,8 +8,13 @@ namespace Runner.Sensors
 {
     public class AISensor : MonoBehaviour
     {
-        private readonly int _checkLayerMask = 1 << 10; //10 is ObstacleDataHolder layer
+        private int _checkLayerMask;
         private readonly float _checkDistance = 5f;
+
+        private void Start()
+        {
+            _checkLayerMask = LayerMask.NameToLayer("ObstacleDataHolder");
+        }
 
         public ObstacleData CheckObstacles()
         {

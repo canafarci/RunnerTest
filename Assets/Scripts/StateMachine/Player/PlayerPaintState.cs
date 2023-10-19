@@ -1,4 +1,5 @@
 using System;
+using Runner.Painting;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +9,7 @@ namespace Runner.StateMachine
     {
         public EventHandler OnPlayerEnteredPaintState;
         private Rigidbody _rigidbody;
+        private Painter _painter;
 
         public void Enter()
         {
@@ -22,12 +24,19 @@ namespace Runner.StateMachine
 
         public CharacterState Tick()
         {
+            if (UnityEngine.Input.GetMouseButton(0))
+            {
+                _painter.TryPaint();
+            }
+
             return CharacterState.StayInState;
         }
+
         [Inject]
-        private void Init(Rigidbody rigidbody)
+        private void Init(Rigidbody rigidbody, Painter painter)
         {
             _rigidbody = rigidbody;
+            _painter = painter;
         }
 
     }

@@ -1,0 +1,29 @@
+#pragma kernel CSMain
+
+RWTexture2D<float4> Result;
+int2 UV;
+float4 paintColor;
+int brushSize; // Paint radius in pixels.
+
+[numthreads(8, 4, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // Calculate the actual UV coordinates within the texture.
+    float4 currentColor = Result[id.xy];
+
+    // Calculate the square of the radius for efficient distance comparison.
+    int brushSizeSquared = brushSize * brushSize;
+
+    int dx = id.x - UV.x;
+    int dy = id.y - UV.y;
+
+    float distanceSquared = dx * dx + dy * dy;
+
+    if ( distanceSquared < brushSizeSquared)
+    {
+        float smoothness = 1.0 - (distanceSquared / brushSizeSquared);
+        currentColor = lerp(currentColor, paintColor, smoothness);
+    }
+
+    Result[id.xy] = currentColor;
+}
