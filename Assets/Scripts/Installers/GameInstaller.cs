@@ -5,6 +5,7 @@ using Runner.ScriptableObjects;
 using Cinemachine;
 using Runner.Movement;
 using Runner.StateMachine;
+using Runner.GameVariables;
 
 namespace Runner.Installers
 {
@@ -56,7 +57,10 @@ namespace Runner.Installers
                 .FromComponentInHierarchy()
                 .AsCached();
 
+            Container.Bind<GameDynamicData>()
+                .AsSingle();
         }
+
         private void BindScriptableObjects()
         {
             Container.Bind<PlayerConfigSO>()
@@ -65,7 +69,8 @@ namespace Runner.Installers
 
             Container.Bind<AIConfigSO>()
                 .FromInstance(_aiConfiguration)
-                .AsSingle();
+                .AsSingle()
+                .NonLazy();
         }
     }
 

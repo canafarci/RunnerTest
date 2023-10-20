@@ -75,7 +75,7 @@ namespace Runner.Painting
             buffer.GetData(paintedPixels);
             buffer.Dispose();
         }
-
+        //Getters-Setters
         public ReactiveProperty<int> GetReactivePercentage() => _percentagePainted;
 
         public void Dispose()
