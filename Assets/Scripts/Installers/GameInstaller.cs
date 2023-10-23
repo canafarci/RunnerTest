@@ -38,12 +38,6 @@ namespace Runner.Installers
             BindScriptableObjects();
 
             Container.Bind<IMoveable>()
-                .WithId(MovementComponents.PlayerRigidbody)
-                .To<PlayerMover>()
-                .FromComponentOn(_playerEntity)
-                .AsSingle();
-
-            Container.Bind<IMoveable>()
                 .WithId(MovementComponents.AICharacterController)
                 .To<AIMover>()
                 .FromComponentInChildren()
