@@ -10,7 +10,7 @@ namespace Runner.StateMachine
         private readonly IMoveable _playerMover;
         private readonly IInputReader _inputReader;
 
-        private PlayerMoveState([Inject(Id = MovementComponents.PlayerRigidbody)] IMoveable mover,
+        private PlayerMoveState(IMoveable mover,
                                 IInputReader reader)
         {
             _playerMover = mover;

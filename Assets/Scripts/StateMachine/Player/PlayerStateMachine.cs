@@ -22,11 +22,6 @@ namespace Runner.StateMachine
             }
         }
 
-        private void Start()
-        {
-            _currentState.Enter();
-        }
-
         //initialization
         [Inject]
         private void Init([Inject(Id = CharacterState.PlayerWaitForStartState)] IState playerWaitState,
@@ -38,6 +33,11 @@ namespace Runner.StateMachine
             _playerMoveState = playerMoveState;
             _playerPaintState = playerPaintState;
             _restartState = playerRestartState;
+        }
+
+        public override void Initialize()
+        {
+            _currentState.Enter();
         }
     }
 }

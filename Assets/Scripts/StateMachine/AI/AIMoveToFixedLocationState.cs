@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Runner.Movement;
 using Runner.Obstacles;
 using UnityEngine;
 using Zenject;
@@ -11,6 +12,13 @@ namespace Runner.StateMachine
     {
         private AIStateVariables _stateVariables;
         private float _randomPositionRadius = 2f;
+
+        protected AIMoveToFixedLocationState(IMoveable mover,
+                                             Transform transform,
+                                             AIStateVariables stateVariables) : base(mover, transform)
+        {
+            _stateVariables = stateVariables;
+        }
 
         public override void Enter()
         {
@@ -44,12 +52,6 @@ namespace Runner.StateMachine
         public override void Exit()
         {
             _stateVariables.ClearObstacleData();
-        }
-
-        [Inject]
-        private void Init(AIStateVariables variables)
-        {
-            _stateVariables = variables;
         }
     }
 }

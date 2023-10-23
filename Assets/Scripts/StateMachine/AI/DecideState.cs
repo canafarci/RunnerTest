@@ -5,7 +5,7 @@ using Runner.Containers;
 
 namespace Runner.StateMachine
 {
-    public class DecideState : MonoBehaviour, IState
+    public class DecideState : IState
     {
         private AISensor _sensor;
         private AIStateVariables _stateVariables;
@@ -48,8 +48,7 @@ namespace Runner.StateMachine
             return _nextState;
         }
 
-        [Inject]
-        private void Init(AIStateVariables variables, AISensor sensor)
+        private DecideState(AIStateVariables variables, AISensor sensor)
         {
             _stateVariables = variables;
             _sensor = sensor;

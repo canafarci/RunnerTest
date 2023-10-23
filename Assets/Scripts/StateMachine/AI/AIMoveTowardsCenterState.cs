@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runner.Movement;
 using UnityEngine;
 
 namespace Runner.StateMachine
@@ -8,6 +9,11 @@ namespace Runner.StateMachine
     {
         private const float _maxTimeAllowedToReachCenter = 4f;
         private float _timeRemaining = _maxTimeAllowedToReachCenter;
+
+        protected AIMoveTowardsCenterState(IMoveable mover,
+                                          Transform transform) : base(mover, transform)
+        {
+        }
         public override void Enter()
         {
             Vector3 target = GetCenterTarget();
@@ -17,7 +23,7 @@ namespace Runner.StateMachine
 
         private Vector3 GetCenterTarget()
         {
-            Vector3 target = transform.position;
+            Vector3 target = _transform.position;
             target.x = 0f;
             return target;
         }

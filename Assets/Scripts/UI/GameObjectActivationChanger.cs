@@ -12,11 +12,11 @@ namespace Runner.UI
         [SerializeField] private bool _disableOnStart;
         private PlayerPaintState _paintState;
 
-        private void Start()
-        {
-            _paintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
-            gameObject.SetActive(!_disableOnStart);
-        }
+        // private void Start()
+        // {
+        //     _paintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
+        //     gameObject.SetActive(!_disableOnStart);
+        // }
 
         private void PlayerPaintState_PlayerEnteredPaintStateHandler(object sender, EventArgs e)
         {
@@ -24,10 +24,10 @@ namespace Runner.UI
             gameObject.SetActive(!isActive);
         }
 
-        [Inject]
-        private void Init(PlayerPaintState paintState)
-        {
-            _paintState = paintState;
-        }
+        // [Inject]
+        // private void Init(PlayerPaintState paintState)
+        // {
+        //     _paintState = paintState;
+        // }
     }
 }

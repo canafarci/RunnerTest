@@ -1,4 +1,5 @@
 using Runner.Containers;
+using Runner.Movement;
 using UnityEngine;
 using Zenject;
 
@@ -9,6 +10,14 @@ namespace Runner.StateMachine
         private AIStateVariables _stateVariables;
         private bool _transitionToRandomMove = false;
         private WaitPoint _waitPoint;
+
+        public AISyncWithObstacleState(IMoveable mover,
+                                       Transform transform,
+                                       AIStateVariables variables) : base(mover, transform)
+        {
+            _stateVariables = variables;
+        }
+
         public override void Enter()
         {
             _waitPoint = _stateVariables.GetWaitPoint();
@@ -37,12 +46,5 @@ namespace Runner.StateMachine
             _waitPoint?.SetIsOccupied(false);
             _waitPoint = null;
         }
-
-        [Inject]
-        private void Init(AIStateVariables variables)
-        {
-            _stateVariables = variables;
-        }
-
     }
 }

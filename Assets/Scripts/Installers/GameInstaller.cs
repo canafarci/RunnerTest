@@ -6,6 +6,8 @@ using Cinemachine;
 using Runner.Movement;
 using Runner.StateMachine;
 using Runner.GameVariables;
+using Runner.Creation;
+using Runner.Containers;
 
 namespace Runner.Installers
 {
@@ -13,10 +15,36 @@ namespace Runner.Installers
     {
         [SerializeField] private PlayerConfigSO _playerConfiguration;
         [SerializeField] private AIConfigSO _aiConfiguration;
-        [SerializeField] private GameObject _playerEntity;
+        [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private GameObject _aiPrefab;
+        [SerializeField] private Transform[] _aiSpawnPositions;
+        [SerializeField] private Transform _playerSpawnPosition;
+        [SerializeField] private EndGameWaitPoints _endGameWaitPoints;
+
 
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<CharacterSpawner>().
+                AsSingle();
+
+            Container.Bind<Transform[]>()
+                .FromInstance(_aiSpawnPositions)
+                .WhenInjectedInto<CharacterSpawner>();
+
+            Container.Bind<Transform>()
+                .FromInstance(_playerSpawnPosition)
+                .WhenInjectedInto<CharacterSpawner>();
+
+            Container.Bind<EndGameWaitPoints>().FromInstance(_endGameWaitPoints);
+
+            Container.BindFactory<AICharacter, AICharacter.Factory>()
+                .FromSubContainerResolve()
+                .ByNewPrefabInstaller<AICharacterInstaller>(_aiPrefab);
+
+            Container.BindFactory<PlayerCharacter, PlayerCharacter.Factory>()
+                .FromSubContainerResolve()
+                .ByNewPrefabInstaller<PlayerCharacterInstaller>(_playerPrefab);
+
             //Input
             Container.Bind<Joystick>()
                 .FromComponentInHierarchy()
@@ -26,30 +54,12 @@ namespace Runner.Installers
                 .To<JoystickInputReader>()
                 .AsSingle();
 
-            Container.Bind<Rigidbody>()
-                .FromComponentInChildren()
-                .AsTransient();
-
-            Container.Bind<Rigidbody>()
-                .WithId(MovementComponents.PlayerRigidbody)
-                .FromComponentOn(_playerEntity)
-                .AsTransient();
-
             BindScriptableObjects();
-
-            Container.Bind<IMoveable>()
-                .WithId(MovementComponents.AICharacterController)
-                .To<AIMover>()
-                .FromComponentInChildren()
-                .AsTransient();
 
             Container.Bind<CinemachineVirtualCamera>()
                 .FromComponentInChildren()
                 .AsTransient();
 
-            Container.Bind<PlayerPaintState>()
-                .FromComponentInHierarchy()
-                .AsCached();
 
             Container.Bind<GameDynamicData>()
                 .AsSingle();

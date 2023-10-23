@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runner.Movement;
 using UnityEngine;
 using Zenject;
 
@@ -13,11 +14,18 @@ namespace Runner.StateMachine
         private const float _transitionToMoveToCenterStateDistance = 4f;
         private float _timeRemaining = _maxTimeAllowedToReachCurrentDestination;
 
+        protected AIMoveInRotatingPlatformState(IMoveable mover,
+                                          Transform transform,
+                                          AIStateVariables stateVariables) : base(mover, transform)
+        {
+            _stateVariables = stateVariables;
+        }
+
         public override void Enter()
         {
             Vector3 targetPosition = _stateVariables.GetTargetPosition();
 
-            float distanceToDestination = Vector3.Distance(transform.position, targetPosition);
+            float distanceToDestination = Vector3.Distance(_transform.position, targetPosition);
 
             //divide path into smaller segment and re-enter this state after reaching destination
             if (distanceToDestination > _distanceLeftToExitState)
@@ -35,7 +43,7 @@ namespace Runner.StateMachine
         private void DividePath(Vector3 targetPosition)
         {
             Vector3 direction = GetDirection(targetPosition);
-            Vector3 target = transform.position + direction * 2f;
+            Vector3 target = _transform.position + direction * 2f;
             target += GetRandomPositionInSphere(1f); //randomize destination
 
             SetTargetPosition(target);
@@ -53,7 +61,7 @@ namespace Runner.StateMachine
                 SetNextState(CharacterState.AIMoveInRotatingPlatformState);
                 return true;
             }
-            else if (Mathf.Abs(transform.position.x) > _transitionToMoveToCenterStateDistance) //character is off center
+            else if (Mathf.Abs(_transform.position.x) > _transitionToMoveToCenterStateDistance) //character is off center
             {
                 SetNextState(CharacterState.AIMoveTowardsCenterState);
                 return true;
@@ -75,11 +83,6 @@ namespace Runner.StateMachine
         {
             currentPosition.y = 0f;
             targetPosition.y = 0f;
-        }
-        [Inject]
-        private void Init(AIStateVariables variables)
-        {
-            _stateVariables = variables;
         }
     }
 }

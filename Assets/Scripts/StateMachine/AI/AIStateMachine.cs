@@ -2,7 +2,7 @@ using Zenject;
 
 namespace Runner.StateMachine
 {
-    public class AIStateMachine : CharacterStateMachine
+    public class AIStateMachine : CharacterStateMachine, IInitializable
     {
         private IState _waitState;
         private IState _decideState;
@@ -13,6 +13,11 @@ namespace Runner.StateMachine
         private IState _moveTowardsCenterState;
         private IState _endGameState;
         private IState _celebrateState;
+
+        public override void Initialize()
+        {
+            _currentState.Enter();
+        }
 
         protected override void ChangeState(CharacterState nextState)
         {
@@ -77,11 +82,6 @@ namespace Runner.StateMachine
             _moveState = moveState;
 
             _currentState = _waitState;
-        }
-
-        private void Start()
-        {
-            _currentState.Enter();
         }
     }
 }

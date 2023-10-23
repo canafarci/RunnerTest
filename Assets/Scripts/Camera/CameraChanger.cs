@@ -19,10 +19,10 @@ namespace Runner.Camera
         private PlayerPaintState _paintState;
         [SerializeField] private CameraID _cameraID;
 
-        private void Start()
-        {
-            _paintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
-        }
+        // private void Start()
+        // {
+        //     _paintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
+        // }
 
         private void PlayerPaintState_PlayerEnteredPaintStateHandler(object sender, EventArgs e)
         {
@@ -36,13 +36,13 @@ namespace Runner.Camera
             }
         }
 
-        [Inject]
-        private void Init(CinemachineVirtualCamera camera, PlayerPaintState paintState)
-        {
-            _camera = camera;
-            _paintState = paintState;
+        // [Inject]
+        // private void Init(CinemachineVirtualCamera camera, PlayerPaintState paintState)
+        // {
+        //     _camera = camera;
+        //     _paintState = paintState;
 
-        }
+        // }
 
     }
 }

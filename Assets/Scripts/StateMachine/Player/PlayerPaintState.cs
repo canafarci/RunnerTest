@@ -5,11 +5,17 @@ using Zenject;
 
 namespace Runner.StateMachine
 {
-    public class PlayerPaintState : MonoBehaviour, IState
+    public class PlayerPaintState : IState
     {
         public EventHandler OnPlayerEnteredPaintState;
         private Rigidbody _rigidbody;
         private Painter _painter;
+
+        private PlayerPaintState(Rigidbody rigidbody, Painter painter)
+        {
+            _rigidbody = rigidbody;
+            _painter = painter;
+        }
 
         public void Enter()
         {
@@ -31,13 +37,5 @@ namespace Runner.StateMachine
 
             return CharacterState.StayInState;
         }
-
-        [Inject]
-        private void Init(Rigidbody rigidbody, Painter painter)
-        {
-            _rigidbody = rigidbody;
-            _painter = painter;
-        }
-
     }
 }

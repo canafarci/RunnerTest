@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Runner.StateMachine
 {
-    public class AIStateVariables : MonoBehaviour
+    public class AIStateVariables
     {
         private ObstacleData _obstacleData;
         private Vector3 _targetPosition;

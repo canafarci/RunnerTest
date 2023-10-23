@@ -7,7 +7,7 @@ namespace Runner.StateMachine
 {
     public class StateChangeTrigger : MonoBehaviour
     {
-        private CharacterStateMachine _stateMachine;
+        private IStateMachine _stateMachine;
         [SerializeField] private LayerStateMap[] _layerStateMaps;
         private Dictionary<int, CharacterState> _layerToStateDict = new();
         private void Start()
@@ -32,7 +32,7 @@ namespace Runner.StateMachine
         }
 
         [Inject]
-        private void Init(CharacterStateMachine stateMachine)
+        private void Init(IStateMachine stateMachine)
         {
             _stateMachine = stateMachine;
         }

@@ -4,11 +4,12 @@ using Zenject;
 
 namespace Runner.StateMachine
 {
-    public abstract class AIMoveState : MonoBehaviour, IState
+    public abstract class AIMoveState : IState
     {
         private Vector3 _targetPosition;
         private CharacterState _nextState;
         private IMoveable _aiMover;
+        protected Transform _transform;
         private const float _distanceRemainingToSwitchState = 0.5f;
 
         public abstract void Enter();
@@ -24,7 +25,7 @@ namespace Runner.StateMachine
             _aiMover.TickMovement(new Vector2(direction.x, direction.z));
 
 
-            if (CheckExitCondition(transform.position, _targetPosition, _distanceRemainingToSwitchState))
+            if (CheckExitCondition(_transform.position, _targetPosition, _distanceRemainingToSwitchState))
             {
                 nextState = _nextState;
             }
@@ -34,7 +35,7 @@ namespace Runner.StateMachine
 
         protected Vector3 GetDirection(Vector3 targetPosition)
         {
-            Vector3 direction = targetPosition - transform.position;
+            Vector3 direction = targetPosition - _transform.position;
 
             //filter small direction changes
             if (direction.magnitude < _distanceRemainingToSwitchState)
@@ -66,10 +67,10 @@ namespace Runner.StateMachine
         protected void SetTargetPosition(Vector3 pos) => _targetPosition = pos;
 
         //initialization
-        [Inject]
-        private void Init([Inject(Id = MovementComponents.AICharacterController)] IMoveable mover)
+        protected AIMoveState(IMoveable mover, Transform transform)
         {
             _aiMover = mover;
+            _transform = transform;
         }
     }
 }

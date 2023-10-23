@@ -3,13 +3,13 @@ using Zenject;
 
 namespace Runner.StateMachine
 {
-    public abstract class CharacterStateMachine : MonoBehaviour
+    public abstract class CharacterStateMachine : IInitializable, IStateMachine, ITickable
     {
         protected IState _currentState;
         protected IState _restartState;
         [SerializeField] private string _currentStateName;
 
-        private void FixedUpdate()
+        public void Tick()
         {
             CharacterState nextState = _currentState.Tick();
 
@@ -35,6 +35,12 @@ namespace Runner.StateMachine
             _currentStateName = _currentState.ToString();
         }
 
+        public abstract void Initialize();
+    }
+
+    public interface IStateMachine
+    {
+        public void AnyStateChange(CharacterState nextState);
     }
 
     public enum CharacterState

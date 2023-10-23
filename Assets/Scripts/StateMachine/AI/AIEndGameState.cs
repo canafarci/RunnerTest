@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Runner.StateMachine
 {
-    public class AIEndGameState : MonoBehaviour, IState
+    public class AIEndGameState : IState
     {
         private EndGameWaitPoints _waitPoints;
         private AIStateVariables _stateVariables;
@@ -33,8 +33,7 @@ namespace Runner.StateMachine
             return CharacterState.AIMoveToFixedLocationState;
         }
 
-        [Inject]
-        private void Init(EndGameWaitPoints waitPoints, AIStateVariables stateVariables, Rigidbody rigidbody)
+        private AIEndGameState(EndGameWaitPoints waitPoints, AIStateVariables stateVariables, Rigidbody rigidbody)
         {
             _waitPoints = waitPoints;
             _stateVariables = stateVariables;

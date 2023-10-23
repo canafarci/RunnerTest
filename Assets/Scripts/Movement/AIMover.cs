@@ -8,19 +8,14 @@ namespace Runner.Movement
 {
     public class AIMover : Mover, IMoveable
     {
+        public AIMover(AIConfigSO config, Transform transform, Rigidbody rigidbody) : base(transform, rigidbody)
+        {
+            _speed = config.AISpeed;
+        }
 
         public void TickMovement(Vector2 input)
         {
             Move(input);
-        }
-
-        //Initialization
-        [Inject]
-        private void Init(Rigidbody rigidbody,
-                          AIConfigSO config)
-        {
-            _rigidbody = rigidbody;
-            _speed = config.AISpeed;
         }
     }
 }

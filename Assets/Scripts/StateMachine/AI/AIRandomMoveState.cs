@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runner.Movement;
 using UnityEngine;
 
 namespace Runner.StateMachine
 {
     public class AIRandomMoveState : AIMoveState
     {
+        protected AIRandomMoveState(IMoveable mover,
+                                    Transform transform) : base(mover, transform)
+        {
+        }
         private float _sampleRange = 2f;
 
         public override void Enter()
@@ -20,7 +25,7 @@ namespace Runner.StateMachine
             float angle = Random.Range(-25, 25); //50 degree arc witch center looking towards the end point
             Vector3 positionInArc = ConvertAngleToPositionInArc(angle);
 
-            return transform.position + positionInArc * _sampleRange;
+            return _transform.position + positionInArc * _sampleRange;
         }
 
         private Vector3 ConvertAngleToPositionInArc(float angle)

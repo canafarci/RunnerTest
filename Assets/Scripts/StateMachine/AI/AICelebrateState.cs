@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Runner.StateMachine
 {
-    public class AICelebrateState : MonoBehaviour, IState
+    public class AICelebrateState : IState
     {
         public void Enter()
         {
