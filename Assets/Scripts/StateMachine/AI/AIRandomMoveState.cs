@@ -5,19 +5,46 @@ using UnityEngine;
 
 namespace Runner.StateMachine
 {
-    public class AIRandomMoveState : AIMoveState
+    public class AIRandomMoveState : IState
     {
-        protected AIRandomMoveState(IMoveable mover,
-                                    Transform transform) : base(mover, transform)
-        {
-        }
-        private float _sampleRange = 2f;
+        private CharacterState _nextState;
+        private Vector3 _targetPosition;
+        private readonly IMoveable _aiMover;
+        private readonly float _sampleRange = 2f;
+        private readonly Transform _transform;
+        private readonly DirectionCalculator _directionCalculator;
+        private readonly DistanceChecker _distanceChecker;
 
-        public override void Enter()
+        protected AIRandomMoveState(IMoveable mover,
+                                    Transform transform,
+                                    DirectionCalculator directionCalculator,
+                                    DistanceChecker distanceChecker)
+        {
+            _aiMover = mover;
+            _transform = transform;
+            _directionCalculator = directionCalculator;
+            _distanceChecker = distanceChecker;
+        }
+
+        public void Enter()
         {
             Vector3 targetPosition = GetRandomPointInArc();
-            SetTargetPosition(targetPosition);
-            SetNextState(CharacterState.DecideState);
+            _targetPosition = targetPosition;
+            _nextState = CharacterState.DecideState;
+        }
+        public CharacterState Tick()
+        {
+            CharacterState nextState = CharacterState.StayInState;
+
+            Vector3 direction = _directionCalculator.GetDirection(_targetPosition);
+            _aiMover.TickMovement(new Vector2(direction.x, direction.z));
+
+            if (_distanceChecker.CheckIfReachedDestination(_targetPosition))
+            {
+                nextState = _nextState;
+            }
+
+            return nextState;
         }
 
         private Vector3 GetRandomPointInArc()
@@ -35,9 +62,6 @@ namespace Runner.StateMachine
             return positionInArc;
         }
 
-        public override void Exit()
-        {
-
-        }
+        public void Exit() { }
     }
 }

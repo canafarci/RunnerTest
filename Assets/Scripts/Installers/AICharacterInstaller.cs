@@ -21,6 +21,9 @@ public class AICharacterInstaller : Installer<AICharacterInstaller>
         Container.Bind<Transform>().FromComponentOnRoot().AsSingle();
         Container.Bind<Rigidbody>().FromComponentOnRoot().AsSingle();
 
+        Container.Bind<DistanceChecker>().AsSingle();
+        Container.Bind<DirectionCalculator>().AsSingle();
+
 
         Container.BindInterfacesAndSelfTo<AIStateMachine>().AsSingle();
         Container.BindInterfacesAndSelfTo<AISensor>().AsSingle();

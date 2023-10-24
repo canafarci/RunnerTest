@@ -5,46 +5,77 @@ using Zenject;
 
 namespace Runner.StateMachine
 {
-    public class AISyncWithObstacleState : AIMoveState
+    public class AISyncWithObstacleState : IState
     {
         private AIStateVariables _stateVariables;
-        private bool _transitionToRandomMove = false;
+        private bool _noWaitPointsAvaliable = false;
+        private CharacterState _nextState;
         private WaitPoint _waitPoint;
+        private Vector3 _targetPosition;
+        private IMoveable _aiMover;
+        private DirectionCalculator _directionCalculator;
+        private DistanceChecker _distanceChecker;
 
-        public AISyncWithObstacleState(IMoveable mover,
-                                       Transform transform,
-                                       AIStateVariables variables) : base(mover, transform)
+        private AISyncWithObstacleState(IMoveable mover,
+                                        DirectionCalculator directionCalculator,
+                                        DistanceChecker distanceChecker,
+                                        AIStateVariables stateVariables)
         {
-            _stateVariables = variables;
+            _aiMover = mover;
+            _directionCalculator = directionCalculator;
+            _distanceChecker = distanceChecker;
+            _stateVariables = stateVariables;
         }
 
-        public override void Enter()
+        public void Enter()
         {
             _waitPoint = _stateVariables.GetWaitPoint();
             //if there is no avaliable wait positions, exit the current state
             if (_waitPoint == null)
             {
-                _transitionToRandomMove = true;
-                SetNextState(CharacterState.AIRandomMoveState);
+                _noWaitPointsAvaliable = true;
+                _nextState = CharacterState.AIRandomMoveState;
             }
             else //a waitpoint is avaliable
             {
-                SetNextState(CharacterState.AIMoveToFixedLocationState);
-                SetTargetPosition(_waitPoint.transform.position);
+                _nextState = CharacterState.AIMoveToFixedLocationState;
+                _targetPosition = _waitPoint.transform.position;
             }
         }
 
-        protected override bool CheckExitCondition(Vector3 currentPosition, Vector3 targetPosition, float distanceRemainingToSwitchState)
+        public CharacterState Tick()
         {
-            return _transitionToRandomMove || //exit state if there is no wait point
-                    (base.CheckExitCondition(currentPosition, targetPosition, distanceRemainingToSwitchState) &&
-                    _stateVariables.IsCurrentObstaclePassable());
+            CharacterState nextState = CharacterState.StayInState;
+
+            Vector3 direction = _directionCalculator.GetDirection(_targetPosition);
+            _aiMover.TickMovement(new Vector2(direction.x, direction.z));
+
+            if (CheckExitCondition(_targetPosition))
+            {
+                nextState = _nextState;
+            }
+
+            return nextState;
         }
-        public override void Exit()
+
+        public void Exit()
         {
-            _transitionToRandomMove = false;
+            _noWaitPointsAvaliable = false;
             _waitPoint?.SetIsOccupied(false);
             _waitPoint = null;
+        }
+
+        private bool CheckExitCondition(Vector3 targetPosition)
+        {
+            bool canExitState = false;
+
+            if (_distanceChecker.CheckIfReachedDestination(targetPosition) &&
+                    _stateVariables.IsCurrentObstaclePassable())
+            {
+                canExitState = true;
+            }
+
+            return canExitState || _noWaitPointsAvaliable;
         }
     }
 }

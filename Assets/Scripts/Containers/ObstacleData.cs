@@ -13,7 +13,21 @@ namespace Runner.Containers
 
         public ObstacleType GetObstacleType() => _obstacleType;
         public Vector3 GetTargetPosition() => _targetLocation.position;
-        public WaitPoint GetWaitPoint() => _waitLocations.Where(x => !x.IsOccupied()).FirstOrDefault();
+        public WaitPoint GetWaitPoint()
+        {
+            WaitPoint waitPoint = _waitLocations.Where(x => !x.IsOccupied()).FirstOrDefault();
+
+            if (waitPoint == null)
+            {
+                return null;
+            }
+            else
+            {
+                waitPoint.SetIsOccupied(true);
+                return waitPoint;
+            }
+
+        }
         public bool IsObstaclePassable() => _isPassable;
         public void SetIsObstaclePassable(bool value) => _isPassable = value;
     }

@@ -5,20 +5,47 @@ using UnityEngine;
 
 namespace Runner.StateMachine
 {
-    public class AIMoveTowardsCenterState : AIMoveState
+    public class AIMoveTowardsCenterState : IState
     {
         private const float _maxTimeAllowedToReachCenter = 4f;
         private float _timeRemaining = _maxTimeAllowedToReachCenter;
+        private Vector3 _targetPosition;
+        private CharacterState _nextState;
+        private readonly Transform _transform;
+        private readonly IMoveable _aiMover;
+        private readonly DirectionCalculator _directionCalculator;
+        private readonly DistanceChecker _distanceChecker;
 
-        protected AIMoveTowardsCenterState(IMoveable mover,
-                                          Transform transform) : base(mover, transform)
+        private AIMoveTowardsCenterState(IMoveable mover,
+                                         Transform transform,
+                                         DirectionCalculator directionCalculator,
+                                         DistanceChecker distanceChecker)
         {
+            _transform = transform;
+            _aiMover = mover;
+            _directionCalculator = directionCalculator;
+            _distanceChecker = distanceChecker;
         }
-        public override void Enter()
+        public void Enter()
         {
             Vector3 target = GetCenterTarget();
-            SetTargetPosition(target);
-            SetNextState(CharacterState.AIMoveInRotatingPlatformState);
+            _targetPosition = target;
+            _nextState = CharacterState.AIMoveInRotatingPlatformState;
+        }
+
+        public CharacterState Tick()
+        {
+            CharacterState nextState = CharacterState.StayInState;
+
+            Vector3 direction = _directionCalculator.GetDirection(_targetPosition);
+            _aiMover.TickMovement(new Vector2(direction.x, direction.z));
+
+            if (CheckExitCondition(_targetPosition, _transform.position))
+            {
+                nextState = _nextState;
+            }
+
+            return nextState;
         }
 
         private Vector3 GetCenterTarget()
@@ -28,22 +55,28 @@ namespace Runner.StateMachine
             return target;
         }
 
-        protected override bool CheckExitCondition(Vector3 currentPosition, Vector3 targetPosition, float distanceRemainingToSwitchState)
+        private bool CheckExitCondition(Vector3 targetPosition, Vector3 currentPosition)
         {
-            _timeRemaining -= Time.fixedDeltaTime; //state machine runs in fixeddeltatime
+            bool canExitState = false;
+            _timeRemaining -= Time.deltaTime;
 
             //if timer expires and havent reached the position, default to random movement
             if (_timeRemaining < 0f)
             {
-                SetNextState(CharacterState.AIRandomMoveState);
-                return true;
+                _nextState = CharacterState.AIRandomMoveState;
+                canExitState = true;
             }
             //platform is curved, therefore y messes up distance calculation
-            ResetVectorY(ref currentPosition, ref targetPosition);
+            else
+            {
+                //platform is curved, therefore y messes up distance calculation
+                ResetVectorY(ref currentPosition, ref targetPosition);
+                canExitState = _distanceChecker.CheckIfReachedDestination(_transform.position);
+            }
 
-            return base.CheckExitCondition(currentPosition, targetPosition, distanceRemainingToSwitchState);
+            return canExitState;
         }
-        public override void Exit()
+        public void Exit()
         {
             _timeRemaining = _maxTimeAllowedToReachCenter;
         }
@@ -53,5 +86,7 @@ namespace Runner.StateMachine
             currentPosition.y = 0f;
             targetPosition.y = 0f;
         }
+
+
     }
 }
