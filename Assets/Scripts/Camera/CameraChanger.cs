@@ -8,41 +8,33 @@ using Zenject;
 
 namespace Runner.Camera
 {
-    public class CameraChanger : MonoBehaviour
+    public class CameraChanger : IInitializable
     {
-        private enum CameraID
+        private CinemachineVirtualCamera _playCamera;
+        private CinemachineVirtualCamera _paintCamera;
+        private CameraChanger([Inject(Id = CameraID.PlayCamera)] CinemachineVirtualCamera playCamera,
+                              [Inject(Id = CameraID.PaintCamera)] CinemachineVirtualCamera paintCamera
+                              )
         {
-            PlayCamera,
-            PaintCamera
+            _playCamera = playCamera;
+            _paintCamera = paintCamera;
         }
-        private CinemachineVirtualCamera _camera;
-        private PlayerPaintState _paintState;
-        [SerializeField] private CameraID _cameraID;
 
-        // private void Start()
-        // {
-        //     _paintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
-        // }
+        public void Initialize()
+        {
+            PlayerPaintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
+        }
 
         private void PlayerPaintState_PlayerEnteredPaintStateHandler(object sender, EventArgs e)
         {
-            if (_cameraID == CameraID.PaintCamera)
-            {
-                _camera.Priority = 10;
-            }
-            else
-            {
-                _camera.Priority = 0;
-            }
+            _playCamera.Priority = 0;
+            _paintCamera.Priority = 10;
         }
+    }
 
-        // [Inject]
-        // private void Init(CinemachineVirtualCamera camera, PlayerPaintState paintState)
-        // {
-        //     _camera = camera;
-        //     _paintState = paintState;
-
-        // }
-
+    public enum CameraID
+    {
+        PlayCamera,
+        PaintCamera
     }
 }

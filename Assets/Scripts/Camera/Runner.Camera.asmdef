@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Runner.StateMachine",
-        "Cinemachine"
+        "Cinemachine",
+        "Runner.Creation"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

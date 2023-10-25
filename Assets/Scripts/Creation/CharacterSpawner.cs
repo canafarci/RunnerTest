@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Runner.Creation
         private readonly PlayerCharacter.Factory _playerFactory;
         private readonly Transform[] _spawnPositions;
         private readonly Transform _playerSpawnPosition;
+
+        public event Action<Transform> OnPlayerSpawned;
 
         private CharacterSpawner(PlayerCharacter.Factory playerFactory,
                                  AICharacter.Factory aiFactory,
@@ -33,6 +36,8 @@ namespace Runner.Creation
             PlayerCharacter playerCharacter = _playerFactory.Create();
             playerCharacter.Transform.parent = _playerSpawnPosition;
             playerCharacter.Transform.localPosition = Vector3.zero;
+
+            OnPlayerSpawned?.Invoke(playerCharacter.Transform);
         }
     }
 }

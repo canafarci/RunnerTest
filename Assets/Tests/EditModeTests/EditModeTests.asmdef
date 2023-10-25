@@ -7,7 +7,8 @@
         "Zenject",
         "Zenject-TestFramework",
         "Runner",
-        "Runner.Movement"
+        "Runner.Movement",
+        "Runner.StateMachine"
     ],
     "includePlatforms": [
         "Editor"

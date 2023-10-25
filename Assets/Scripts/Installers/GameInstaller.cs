@@ -8,6 +8,7 @@ using Runner.StateMachine;
 using Runner.GameVariables;
 using Runner.Creation;
 using Runner.Containers;
+using Runner.Camera;
 
 namespace Runner.Installers
 {
@@ -20,6 +21,8 @@ namespace Runner.Installers
         [SerializeField] private Transform[] _aiSpawnPositions;
         [SerializeField] private Transform _playerSpawnPosition;
         [SerializeField] private EndGameWaitPoints _endGameWaitPoints;
+        [SerializeField] private CinemachineVirtualCamera _playCam;
+        [SerializeField] private CinemachineVirtualCamera _paintCam;
 
 
         public override void InstallBindings()
@@ -36,6 +39,7 @@ namespace Runner.Installers
                 .WhenInjectedInto<CharacterSpawner>();
 
             Container.Bind<EndGameWaitPoints>().FromInstance(_endGameWaitPoints);
+
 
             Container.BindFactory<AICharacter, AICharacter.Factory>()
                 .FromSubContainerResolve()
@@ -56,12 +60,26 @@ namespace Runner.Installers
 
             BindScriptableObjects();
 
-            Container.Bind<CinemachineVirtualCamera>()
-                .FromComponentInChildren()
-                .AsTransient();
-
+            BindCameras();
 
             Container.Bind<GameDynamicData>()
+                .AsSingle();
+        }
+
+        private void BindCameras()
+        {
+            Container.Bind<CinemachineVirtualCamera>()
+                .WithId(CameraID.PlayCamera)
+                .FromInstance(_playCam);
+
+            Container.Bind<CinemachineVirtualCamera>()
+                .WithId(CameraID.PaintCamera)
+                .FromInstance(_paintCam);
+
+            Container.BindInterfacesAndSelfTo<CameraTargetSetter>()
+                .AsSingle().NonLazy();
+
+            Container.BindInterfacesAndSelfTo<CameraChanger>()
                 .AsSingle();
         }
 

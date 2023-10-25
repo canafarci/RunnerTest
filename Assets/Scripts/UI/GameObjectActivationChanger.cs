@@ -10,24 +10,17 @@ namespace Runner.UI
     public class GameObjectActivationChanger : MonoBehaviour
     {
         [SerializeField] private bool _disableOnStart;
-        private PlayerPaintState _paintState;
 
-        // private void Start()
-        // {
-        //     _paintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
-        //     gameObject.SetActive(!_disableOnStart);
-        // }
+        private void Start()
+        {
+            PlayerPaintState.OnPlayerEnteredPaintState += PlayerPaintState_PlayerEnteredPaintStateHandler;
+            gameObject.SetActive(!_disableOnStart);
+        }
 
         private void PlayerPaintState_PlayerEnteredPaintStateHandler(object sender, EventArgs e)
         {
             bool isActive = gameObject.activeSelf;
             gameObject.SetActive(!isActive);
         }
-
-        // [Inject]
-        // private void Init(PlayerPaintState paintState)
-        // {
-        //     _paintState = paintState;
-        // }
     }
 }

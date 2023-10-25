@@ -7,7 +7,7 @@ namespace Runner.StateMachine
 {
     public class PlayerPaintState : IState
     {
-        public EventHandler OnPlayerEnteredPaintState;
+        public static EventHandler OnPlayerEnteredPaintState;
         private Rigidbody _rigidbody;
         private Painter _painter;
 
