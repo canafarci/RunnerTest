@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "Zenject",
         "Zenject-TestFramework",
-        "Runner"
+        "Runner",
+        "Runner.Movement"
     ],
     "includePlatforms": [
         "Editor"
@@ -16,7 +17,8 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll",
-        "Moq.dll"
+        "Moq.dll",
+        "Zenject-usage.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

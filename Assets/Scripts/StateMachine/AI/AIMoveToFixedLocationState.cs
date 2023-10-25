@@ -11,9 +11,10 @@ namespace Runner.StateMachine
     public class AIMoveToFixedLocationState : IState
     {
         private CharacterState _nextState;
-        private float _randomPositionRadius = 2f;
         private Vector3 _targetPosition;
+        private float _randomPositionRadius = 2f;
         private readonly AIStateVariables _stateVariables;
+        private readonly PositionRandomizer _positionRandomizer;
         private readonly IMoveable _aiMover;
         private readonly DirectionCalculator _directionCalculator;
         private readonly DistanceChecker _distanceChecker;
@@ -21,19 +22,23 @@ namespace Runner.StateMachine
         private AIMoveToFixedLocationState(IMoveable mover,
                                             DirectionCalculator directionCalculator,
                                             DistanceChecker distanceChecker,
-                                            AIStateVariables stateVariables)
+                                            AIStateVariables stateVariables,
+                                            PositionRandomizer positionRandomizer)
         {
             _aiMover = mover;
             _directionCalculator = directionCalculator;
             _distanceChecker = distanceChecker;
             _stateVariables = stateVariables;
+            _positionRandomizer = positionRandomizer;
         }
 
         public void Enter()
         {
             CheckIfReachedEndGame();
-            Vector3 destination = RandomizeDestinationPoint();
-            _targetPosition = destination;
+
+            Vector3 destination = _stateVariables.GetTargetPosition();
+            Vector3 targetPosition = _positionRandomizer.RandomizeDestinationPoint(destination, _randomPositionRadius);
+            _targetPosition = targetPosition;
         }
 
         public CharacterState Tick()
@@ -63,26 +68,9 @@ namespace Runner.StateMachine
                 _nextState = CharacterState.DecideState;
             }
         }
-
-        private Vector3 RandomizeDestinationPoint()
-        {
-            Vector3 destination = _stateVariables.GetTargetPosition();
-
-            Vector3 noise = GetRandomPositionInSphere(_randomPositionRadius);
-            destination += noise;
-            return destination;
-        }
-
         public void Exit()
         {
             _stateVariables.ClearObstacleData();
-        }
-
-        private Vector3 GetRandomPositionInSphere(float radius)
-        {
-            Vector3 noise = radius * UnityEngine.Random.insideUnitSphere;
-            noise.y = 0f;
-            return noise;
         }
     }
 }

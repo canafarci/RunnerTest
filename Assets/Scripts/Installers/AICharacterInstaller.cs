@@ -23,7 +23,7 @@ public class AICharacterInstaller : Installer<AICharacterInstaller>
 
         Container.Bind<DistanceChecker>().AsSingle();
         Container.Bind<DirectionCalculator>().AsSingle();
-
+        Container.Bind<PositionRandomizer>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<AIStateMachine>().AsSingle();
         Container.BindInterfacesAndSelfTo<AISensor>().AsSingle();

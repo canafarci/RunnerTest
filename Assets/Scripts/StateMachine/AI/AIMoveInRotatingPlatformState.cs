@@ -12,6 +12,7 @@ namespace Runner.StateMachine
         private Vector3 _targetPosition;
         private float _timeRemaining = _maxTimeAllowedToReachCurrentDestination;
         private readonly AIStateVariables _stateVariables;
+        private readonly PositionRandomizer _positionRandomizer;
         private const float _maxTimeAllowedToReachCurrentDestination = 4f;
         private const float _distanceLeftToExitState = 2f;
         private const float _transitionToMoveToCenterStateDistance = 4f;
@@ -24,13 +25,15 @@ namespace Runner.StateMachine
                                                 Transform transform,
                                                 DirectionCalculator directionCalculator,
                                                 DistanceChecker distanceChecker,
-                                                AIStateVariables stateVariables)
+                                                AIStateVariables stateVariables,
+                                                PositionRandomizer positionRandomizer)
         {
             _aiMover = mover;
             _transform = transform;
             _directionCalculator = directionCalculator;
             _distanceChecker = distanceChecker;
             _stateVariables = stateVariables;
+            _positionRandomizer = positionRandomizer;
         }
 
         public void Enter()
@@ -71,7 +74,7 @@ namespace Runner.StateMachine
         {
             Vector3 direction = _directionCalculator.GetDirection(targetPosition);
             Vector3 target = _transform.position + direction * 2f;
-            target += GetRandomPositionInSphere(1f); //randomize destination
+            target = _positionRandomizer.RandomizeDestinationPoint(target, 1f);//randomize destination
 
             _targetPosition = target;
         }
@@ -106,13 +109,6 @@ namespace Runner.StateMachine
         public void Exit()
         {
             _timeRemaining = _maxTimeAllowedToReachCurrentDestination;
-        }
-
-        private Vector3 GetRandomPositionInSphere(float radius)
-        {
-            Vector3 noise = radius * Random.insideUnitSphere;
-            noise.y = 0f;
-            return noise;
         }
 
         private void ResetVectorY(ref Vector3 currentPosition, ref Vector3 targetPosition)
