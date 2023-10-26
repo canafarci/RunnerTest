@@ -24,6 +24,5 @@ public class CameraTargetSetter
     private void CharacterSpawner_PlayerSpawnedHandler(Transform transform)
     {
         _cam.m_Follow = transform;
-        UnityEngine.Debug.Log(_cam);
     }
 }

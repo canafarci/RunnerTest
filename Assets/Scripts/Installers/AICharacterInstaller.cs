@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runner.Animation;
 using Runner.Containers;
 using Runner.Creation;
 using Runner.Movement;
@@ -20,6 +21,9 @@ public class AICharacterInstaller : Installer<AICharacterInstaller>
         Container.Bind<AICharacter>().AsSingle();
         Container.Bind<Transform>().FromComponentOnRoot().AsSingle();
         Container.Bind<Rigidbody>().FromComponentOnRoot().AsSingle();
+        Container.Bind<Animator>().FromComponentInHierarchy().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<CharacterAnimationController>().AsSingle();
 
         Container.Bind<DistanceChecker>().AsSingle();
         Container.Bind<DirectionCalculator>().AsSingle();

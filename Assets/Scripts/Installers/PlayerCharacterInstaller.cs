@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Runner.Creation;
+using Runner.Animation;
 using Runner.Movement;
 using Runner.StateMachine;
 using UnityEngine;
@@ -13,10 +14,12 @@ public class PlayerCharacterInstaller : Installer<PlayerCharacterInstaller>
         Container.Bind<PlayerCharacter>().AsSingle();
         Container.Bind<Transform>().FromComponentOnRoot().AsSingle();
         Container.Bind<Rigidbody>().FromComponentOnRoot().AsSingle();
+        Container.Bind<Animator>().FromComponentInHierarchy().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<CharacterAnimationController>().AsSingle();
 
         Container.Bind<IMoveable>().To<PlayerMover>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerStateMachine>().AsSingle();
-
 
         Container.Bind<IState>()
                 .WithId(CharacterState.PlayerWaitForStartState)
