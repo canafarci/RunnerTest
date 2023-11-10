@@ -22,7 +22,7 @@ namespace Runner.StateMachine.Tests
             PreInstall();
 
             Container.Bind<IState>()
-                .WithId(CharacterState.PlayerWaitForStartState)
+                .WithId(CharacterState.PlayerWaitState)
                 .FromInstance(_mockState.Object).
                 AsSingle();
 

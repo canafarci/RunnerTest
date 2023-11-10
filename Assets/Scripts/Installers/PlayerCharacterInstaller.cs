@@ -12,6 +12,7 @@ public class PlayerCharacterInstaller : Installer<PlayerCharacterInstaller>
     public override void InstallBindings()
     {
         Container.Bind<PlayerCharacter>().AsSingle();
+
         Container.Bind<Transform>().FromComponentOnRoot().AsSingle();
         Container.Bind<Rigidbody>().FromComponentOnRoot().AsSingle();
         Container.Bind<Animator>().FromComponentInHierarchy().AsSingle();
@@ -22,7 +23,7 @@ public class PlayerCharacterInstaller : Installer<PlayerCharacterInstaller>
         Container.BindInterfacesAndSelfTo<PlayerStateMachine>().AsSingle();
 
         Container.Bind<IState>()
-                .WithId(CharacterState.PlayerWaitForStartState)
+                .WithId(CharacterState.PlayerWaitState)
                 .To<PlayerWaitForStartState>()
                 .AsSingle();
 
@@ -40,5 +41,8 @@ public class PlayerCharacterInstaller : Installer<PlayerCharacterInstaller>
                  .WithId(CharacterState.PlayerPaintState)
                  .To<PlayerPaintState>()
                  .AsSingle();
+
+        var restartState = Container.ResolveId<IState>(CharacterState.PlayerRestartState) as PlayerRestartState;
+        Container.Bind<IRestartable>().FromInstance(restartState);
     }
 }

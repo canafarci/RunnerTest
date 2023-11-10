@@ -44,7 +44,6 @@ namespace Runner.StateMachine
             ChangeState(nextState);
         }
 
-
         protected void TransitionTo(IState nextState)
         {
             _currentState.Exit();
@@ -60,7 +59,7 @@ namespace Runner.StateMachine
 
     public enum CharacterState
     {
-        PlayerWaitForStartState,
+        PlayerWaitState,
         AIWaitState,
         PlayerMoveState,
         PlayerPaintState,

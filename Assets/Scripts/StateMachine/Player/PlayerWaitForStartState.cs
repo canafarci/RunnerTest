@@ -11,9 +11,5 @@ namespace Runner.StateMachine
         {
             _nextState = CharacterState.PlayerMoveState;
         }
-        public override void Enter()
-        {
-            _timeLeft = 0f;
-        }
     }
 }

@@ -29,7 +29,7 @@ namespace Runner.StateMachine.Tests
                 AsTransient();
 
             Container.Bind<IState>().
-                WithId(CharacterState.PlayerWaitForStartState).
+                WithId(CharacterState.PlayerWaitState).
                 To<PlayerWaitForStartState>().
                 AsSingle();
 
@@ -39,7 +39,7 @@ namespace Runner.StateMachine.Tests
             Container.Resolve<PlayerStateMachine>();
         }
 
-        [Inject(Id = CharacterState.PlayerWaitForStartState)] IState _waitState;
+        [Inject(Id = CharacterState.PlayerWaitState)] IState _waitState;
 
         [UnityTest]
         public IEnumerator wait_time_is_set_when_state_is_created()

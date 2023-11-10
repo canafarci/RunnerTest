@@ -8,14 +8,13 @@ namespace Runner.StateMachine
 {
     public class PlayerRestartState : RestartState
     {
-        private PlayerRestartState(Transform transform, Rigidbody rigidbody) : base(transform)
+        public PlayerRestartState(Transform transform, Rigidbody rigidbody) : base(transform, rigidbody)
         {
-            _rigidbody = rigidbody;
         }
 
         public override CharacterState Tick()
         {
-            return CharacterState.PlayerMoveState;
+            return CharacterState.PlayerWaitState;
         }
     }
 }

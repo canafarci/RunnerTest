@@ -6,14 +6,13 @@ namespace Runner.StateMachine
 {
     public class AIRestartState : RestartState
     {
-        protected AIRestartState(Rigidbody rigidbody, Transform transform) : base(transform)
+        public AIRestartState(Transform transform, Rigidbody rigidbody) : base(transform, rigidbody)
         {
-            _rigidbody = rigidbody;
         }
 
         public override CharacterState Tick()
         {
-            return CharacterState.DecideState;
+            return CharacterState.AIWaitState;
         }
     }
 }

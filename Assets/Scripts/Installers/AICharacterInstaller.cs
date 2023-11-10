@@ -19,6 +19,7 @@ public class AICharacterInstaller : Installer<AICharacterInstaller>
     public override void InstallBindings()
     {
         Container.Bind<AICharacter>().AsSingle();
+
         Container.Bind<Transform>().FromComponentOnRoot().AsSingle();
         Container.Bind<Rigidbody>().FromComponentOnRoot().AsSingle();
         Container.Bind<Animator>().FromComponentInHierarchy().AsSingle();
@@ -50,7 +51,7 @@ public class AICharacterInstaller : Installer<AICharacterInstaller>
         Container.Bind<IState>()
                  .WithId(CharacterState.AIRestartState)
                  .To<AIRestartState>()
-                 .AsTransient();
+                 .AsCached();
 
         Container.Bind<IState>()
                  .WithId(CharacterState.AIMoveToFixedLocationState)
@@ -90,5 +91,9 @@ public class AICharacterInstaller : Installer<AICharacterInstaller>
         Container.Bind<EndGameWaitPoints>()
                 .FromInstance(_endGameWaitPoints)
                 .AsSingle();
+
+        var restartState = Container.ResolveId<IState>(CharacterState.AIRestartState) as RestartState;
+        Container.Bind<IRestartable>().FromInstance(restartState);
+
     }
 }

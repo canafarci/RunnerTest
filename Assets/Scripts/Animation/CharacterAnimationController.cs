@@ -15,7 +15,7 @@ namespace Runner.Animation
         private readonly int _xMovementHash = Animator.StringToHash("XMovement");
         private readonly int _yMovementHash = Animator.StringToHash("YMovement");
         private readonly int _zMovementHash = Animator.StringToHash("ZMovement");
-        private const float _interpolationFactor = 25f;
+        private const float _interpolationFactor = 15f;
 
 
         private CharacterAnimationController(Animator animator, Transform transform)
@@ -29,7 +29,7 @@ namespace Runner.Animation
             Vector3 direction = GetDirection(_transform.position);
 
             _animator.SetFloat(_xMovementHash, direction.x);
-            _animator.SetFloat(_yMovementHash, direction.y);
+            _animator.SetFloat(_yMovementHash, Mathf.Abs(direction.y));
             _animator.SetFloat(_zMovementHash, direction.z);
         }
 
@@ -37,7 +37,7 @@ namespace Runner.Animation
         {
             Vector3 direction = currentPosition - _lastPosition;
             direction = direction.normalized;
-            direction = Vector3.Lerp(direction, _lastDirection, Time.fixedDeltaTime * _interpolationFactor);
+            direction = Vector3.Lerp(_lastDirection, direction, Time.fixedDeltaTime * _interpolationFactor);
 
             _lastPosition = _transform.position;
             _lastDirection = direction;
